@@ -15,6 +15,7 @@ app.use((req,res,next)=>{
 })
 
 
+
 //routes
 app.use('/api/socialPosts',socialPostRoutes)
 app.use('/api/accounts',accountRoutes)
