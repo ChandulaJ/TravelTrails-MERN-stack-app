@@ -1,0 +1,45 @@
+
+const Account = require('../models/accountModel')
+
+//get all accounts
+const getAccounts = async(req,res)=>{
+    const accounts=await Account.find({}).sort({createdAt:-1})
+    res.status(200).json(accounts)
+}
+
+
+//get a single account
+const getAccount = async(req,res)=>{
+    const {id} =req.params
+    const account = await Account.findById(id)
+
+    if(!account){
+        return res.status(404).json({error:'No such account'})
+    }
+    res.status(200).json(account);
+}
+
+
+//create a new account
+const createAccount = async(req,res)=>{
+    const {username,password,email,address,occupation,dateofbith} = req.body
+
+    try {
+        const account = await Account.create({username,password,email,address,occupation,dateofbith})
+        res.status(200).json(account)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
+
+
+//delete a account
+
+//update a account
+
+module.exports = {
+    createAccount,
+    getAccount,
+    getAccounts
+    
+}

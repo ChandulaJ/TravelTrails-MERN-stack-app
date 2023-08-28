@@ -1,17 +1,22 @@
+
 const express = require('express')
 const router = express.Router()
-
+const {
+    createAccount,
+    getAccount,
+    getAccounts
+} = require('../controllers/accountController')
 
 
 //get single account
-router.get('/:id',(req,res)=>{
-    res.json({mssg:'Get single account'})
-})
+router.get('/:id',getAccount)
+
+//get all the accounts
+router.get('/',getAccounts)
+
 
 //create a new account
-router.post('/',(req,res)=>{
-    res.json({mssg:'Post a new account'})
-})
+router.post('/',createAccount)
 
 //delete a account
 router.delete('/:id',(req,res)=>{
