@@ -11,7 +11,9 @@ const getSocialPosts = async(req,res)=>{
 //get a single socialpost
 const getSocialPost = async(req,res)=>{
     const {id} =req.params
-///if(!mongoose)/////////////////////////
+if(!mongoose.Types.ObjectId.isValid(id)){
+    return res.status(404).json({error:'No such socialPost'})
+}
 
     const socialPost = await SocialPost.findById(id)
 
@@ -37,12 +39,44 @@ const createSocialPost = async(req,res)=>{
 
 
 //delete a socialpost
+const deleteSocialPost = async(req,res)=>{
+    const {id} =req.params
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error:'No such SocialPost'})
+    }
+   const socialPost = await SocialPost.findOneAndDelete({_id:id})
 
-//update a socialpost
+   if(!socialPost){
+    return res.status(400).json({error:'No such SocialPost'})
+}
+res.status(200).json(socialPost)
+
+}
+
+
+//update a socialpost // not required
+/*
+const updateSocialPost = async(req,res)=>{
+   const {id} =req.params
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error:'No such SocialPost'})
+    }
+    const socialPost = await SocialPost.findOneAndUpdate({_id:id},{
+        ...req.body
+    })
+
+   if(!socialPost){
+    return res.status(400).json({error:'No such SocialPost'})
+}
+
+}
+*/
 
 module.exports = {
     createSocialPost,
     getSocialPost,
-    getSocialPosts
+    getSocialPosts,
+    deleteSocialPost
+    
     
 }

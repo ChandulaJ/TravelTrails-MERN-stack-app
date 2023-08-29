@@ -4,7 +4,9 @@ const router = express.Router()
 const {
     createAccount,
     getAccount,
-    getAccounts
+    getAccounts,
+    deleteAccount,
+    updateAccount
 } = require('../controllers/accountController')
 
 
@@ -19,15 +21,10 @@ router.get('/',getAccounts)
 router.post('/',createAccount)
 
 //delete a account
-router.delete('/:id',(req,res)=>{
-    res.json({mssg:'Delete a  account'})
-})
+router.delete('/:id',deleteAccount)
 
 
 //update a account
-router.patch('/:id',(req,res)=>{
-    res.json({mssg:'Update a  account'})
-})
-
+router.patch('/:id',updateAccount)
 
 module.exports = router

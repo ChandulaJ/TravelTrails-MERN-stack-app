@@ -1,4 +1,4 @@
-
+const mongoose = require('mongoose')
 const Account = require('../models/accountModel')
 
 //get all accounts
@@ -34,12 +34,40 @@ const createAccount = async(req,res)=>{
 
 
 //delete a account
+const deleteAccount = async(req,res)=>{
+    const {id} =req.params
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error:'No such Account'})
+    }
+   const account = await Account.findOneAndDelete({_id:id})
+
+   if(!account){
+    return res.status(400).json({error:'No such Account'})
+}
+res.status(200).json(account)
+
+}
 
 //update a account
-
+const updateAccount = async(req,res)=>{
+    const {id} =req.params
+     if(!mongoose.Types.ObjectId.isValid(id)){
+         return res.status(404).json({error:'No such Account'})
+     }
+     const account = await Account.findOneAndUpdate({_id:id},{
+         ...req.body
+     })
+ 
+    if(!account){
+     return res.status(400).json({error:'No such Account'})
+ }
+ 
+ }
 module.exports = {
     createAccount,
     getAccount,
-    getAccounts
+    getAccounts,
+    deleteAccount,
+    updateAccount
     
 }

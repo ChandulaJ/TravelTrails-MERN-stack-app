@@ -3,7 +3,9 @@ const router = express.Router()
 const {
     createSocialPost,
     getSocialPost,
-    getSocialPosts
+    getSocialPosts,
+    deleteSocialPost
+    
 } = require('../controllers/socialPostController')
 
 //Get all socialPosts
@@ -15,11 +17,7 @@ router.get('/:id',getSocialPost)
 router.post('/',createSocialPost)
 
 //delete a socialPost
-router.delete('/:id',(req,res)=>{
-    res.json({mssg:'Delete a  socialPost'})
-})
-
-
+router.delete('/:id',deleteSocialPost)
 
 
 module.exports = router
