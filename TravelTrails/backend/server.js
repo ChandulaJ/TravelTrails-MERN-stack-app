@@ -32,6 +32,4 @@ console.log('connected to db and listening on port ',process.env.PORT)
 .catch((err)=>{console.log(err)})
 
 
-
-
 process.env
