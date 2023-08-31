@@ -61,7 +61,7 @@ const updateAccount = async(req,res)=>{
     if(!account){
      return res.status(400).json({error:'No such Account'})
  }
- 
+ res.status(200)
  }
 module.exports = {
     createAccount,
