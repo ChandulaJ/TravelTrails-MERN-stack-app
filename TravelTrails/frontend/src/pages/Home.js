@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 //components
 import SocialPostDetails from "../components/SocialPostDetails";
+import SocialPostForm from "../components/SocialPostForm";
 
 const Home = () => {
   const [socialPosts, setSocialPosts] = useState([]);
@@ -37,6 +38,7 @@ const Home = () => {
           <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
         ))}
       </div>
+      <SocialPostForm />
     </div>
   );
 };
