@@ -77,7 +77,7 @@ const AccountForm =()=>{
 
 <label>Date of birth</label>
             <input
-            type='text'
+            type='date'
             onChange={(e)=>setDateofbirth(e.target.value)}
             value ={dateofbith}
             />

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import SocialPostDetails from "../components/SocialPostDetails";
 import SocialPostForm from "../components/SocialPostForm";
 
+
 const Home = () => {
   const [socialPosts, setSocialPosts] = useState([]);
   const [error, setError] = useState(null);
@@ -37,8 +38,10 @@ const Home = () => {
         {socialPosts && socialPosts.map((socialPost) => (
           <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
         ))}
+        
       </div>
       <SocialPostForm />
+      
     </div>
   );
 };
