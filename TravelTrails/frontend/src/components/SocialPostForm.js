@@ -61,7 +61,7 @@ const SocialPostForm =()=>{
             onChange={(e)=>setVideos(e.target.value)}
             value ={videos}
             />
-<button>Add workout</button>
+<button>Add post</button>
 {error && <div className="error">{error}</div>}
             </form>
 

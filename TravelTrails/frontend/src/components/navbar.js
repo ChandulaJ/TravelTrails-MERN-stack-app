@@ -5,8 +5,18 @@ const Navbar = () => {
     <header>
         <div className="container">
             <Link to="/">
-                <h1 className="logo">TravelTrails</h1>
+           
+            <img
+                src="logo.png"
+                alt="TravelTrails Logo"
+                className="logo"
+                width="556" 
+                height="188" 
+   
+/>
+
             </Link> 
+            
         </div>
     </header>
   );

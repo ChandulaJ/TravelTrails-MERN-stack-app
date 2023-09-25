@@ -1,5 +1,13 @@
 {
-  "proxy": "http://localhost:4000",
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:4000"
+    },
+    "/images": {
+      "target": "F:/GithubRepos/TravelTrails-MERN-stack-app/TravelTrails/frontend/src/images/logo.png"
+    }
+  },
+  
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
