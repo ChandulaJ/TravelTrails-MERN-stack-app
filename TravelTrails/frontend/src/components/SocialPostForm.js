@@ -1,5 +1,8 @@
 import React,{useState} from 'react'
+import {useSocialPostsContext} from '../hooks/useSocialPostsContext'
+
 const SocialPostForm =()=>{
+    const{dispatch} = useSocialPostsContext()
     const[author,setAuthor]=useState('')
     const[contentText,setContentText]=useState('')
     const[photos,setPhotos]=useState('')
@@ -22,12 +25,14 @@ const SocialPostForm =()=>{
         }
 
         if(response.ok){
-            setError(null)
-            console.log('socialPost added',json)
             setAuthor('')
             setContentText('')
             setPhotos('')
             setVideos('')
+            setError(null)
+            console.log('socialPost added',json)
+            dispatch({type:'CREATE_SOCIALPOST',payload:json})
+
         }
     }
 

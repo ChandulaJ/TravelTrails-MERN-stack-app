@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
+import { useSocialPostsContext } from "../hooks/useSocialPostsContext";
 
 //components
 import SocialPostDetails from "../components/SocialPostDetails";
 import AccountDetails from "../components/AccountDetails";
 import SocialPostForm from "../components/SocialPostForm";
-import AccountForm from "../components/AccountForm";
+
 
 
 const Home = () => {
-  const [socialPosts, setSocialPosts] = useState([]);
+  const{socialPosts,dispatch} = useSocialPostsContext()
+
   const [accounts, setAccounts] = useState([]);
   const [error, setError] = useState(null);
 
@@ -16,20 +18,24 @@ const Home = () => {
     const fetchSocialPosts = async () => {
       try {
         const response = await fetch('/api/socialPosts');
+        const json = await response.json();
 
-        if (!response.ok) {
+
+        if (response.ok) {
+         dispatch({type: 'SET_SOCIALPOSTS',payload: json})
+        }else{
           throw new Error('Network response for socialPost fetch was not ok');
         }
 
-        const json = await response.json();
-        setSocialPosts(json);
+      
+       
       } catch (error) {
         setError(error);
       }
     };
 
-    fetchSocialPosts();
-  }, []);
+    fetchSocialPosts()
+  }, [dispatch])
   
 
   useEffect(() => {
