@@ -8,6 +8,7 @@ const SocialPostForm =()=>{
     const[photos,setPhotos]=useState('')
     const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
+    const [emptyFields,setEmptyFields]=useState([])
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
@@ -22,6 +23,7 @@ const SocialPostForm =()=>{
 
         if(!response.ok){
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
 
         if(response.ok){
@@ -30,6 +32,7 @@ const SocialPostForm =()=>{
             setPhotos('')
             setVideos('')
             setError(null)
+            setEmptyFields([])  
             console.log('socialPost added',json)
             dispatch({type:'CREATE_SOCIALPOST',payload:json})
 
@@ -44,6 +47,7 @@ const SocialPostForm =()=>{
             type='text'
             onChange={(e)=>setAuthor(e.target.value)}
             value ={author}
+            className={emptyFields.includes('author')?'error':''}
             />
 
 <label>Post contentText</label>
@@ -51,6 +55,7 @@ const SocialPostForm =()=>{
             type='text'
             onChange={(e)=>setContentText(e.target.value)}
             value ={contentText}
+            className={emptyFields.includes('contentText')?'error':''}
             />
 
 <label>Post photos</label>

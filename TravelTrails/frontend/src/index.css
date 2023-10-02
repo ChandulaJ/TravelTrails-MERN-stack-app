@@ -98,6 +98,10 @@ div.error {
   margin: 20px 0;
 }
 
+input.error {
+  border: 1px solid var(--error);
+}
+
 /*account list*/
 
 .account-details {

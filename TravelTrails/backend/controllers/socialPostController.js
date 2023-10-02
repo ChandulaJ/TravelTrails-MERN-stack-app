@@ -29,6 +29,20 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 const createSocialPost = async(req,res)=>{
     const {author,contentText,photos,videos} = req.body
 
+
+    let emptyFields = []
+
+    if(!author){
+        emptyFields.push('author')
+    }
+    if(!contentText){
+        emptyFields.push('contentText')
+    }
+    if(emptyFields.length>0){
+        return res.status(400).json({error:'Please fill all the fields',emptyFields})
+    }
+
+
     try {
         const socialPost = await SocialPost.create({author,contentText,photos,videos})
         res.status(200).json(socialPost)

@@ -12,6 +12,11 @@ export const socialPostsReducer = (state,action) =>{
             return{
                 socialPosts: [action.payload,...state.socialPosts]
             }
+        case 'DELETE_SOCIALPOST':
+            return {
+                socialPosts: state.socialPosts.filter((s) => s._id !== action.payload._id)
+            }
+
         default:
             return state
 
