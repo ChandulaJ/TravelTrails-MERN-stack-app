@@ -25,7 +25,7 @@ const createAccount = async(req,res)=>{
     const {username,password,email,address,occupation,dateofbith} = req.body
 
     try {
-        const account = await Account.create({username,password,email,address,occupation,dateofbith})
+        const account = await Account.createAccount(username,password,email,address,occupation,dateofbith)
         res.status(200).json(account)
     } catch (error) {
         res.status(400).json({error:error.message})

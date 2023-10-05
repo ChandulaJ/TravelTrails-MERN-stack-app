@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 const Schema  = mongoose.Schema
 
 const accountSchema = new Schema({
@@ -6,7 +7,8 @@ const accountSchema = new Schema({
 
     username:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
 
     password:{
@@ -16,7 +18,7 @@ const accountSchema = new Schema({
 
      email:{
         type:String,
-        required:false
+        required:true
      },
      address:{
         type:String,
@@ -32,5 +34,20 @@ const accountSchema = new Schema({
     }
 },
 {timestamps:true})
+
+//static create account method
+accountSchema.statics.createAccount = async function(username,password,email,address,occupation,dateofbith){
+    const exists = await this.findOne({username})
+    if(exists){
+        throw Error('Username already exists')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password,salt)
+
+
+    const account = await this.create({username,password:hash,email,address,occupation,dateofbith})
+    return account
+}
 
 module.exports = mongoose.model('account',accountSchema)
