@@ -50,4 +50,20 @@ accountSchema.statics.createAccount = async function(username,password,email,add
     return account
 }
 
+
+//static update account method
+accountSchema.statics.updateAccount = async function(username,password,email,address,occupation,dateofbith){
+    const exists = await this.findOne({username})
+    if(exists){
+        throw Error('Username already exists')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password,salt)
+
+
+    const account = await this.create({username,password:hash,email,address,occupation,dateofbith})
+    return account
+}
+
 module.exports = mongoose.model('account',accountSchema)
