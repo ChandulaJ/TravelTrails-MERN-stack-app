@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const validator = require('validator')
 const Schema  = mongoose.Schema
 
 const accountSchema = new Schema({
@@ -37,6 +38,17 @@ const accountSchema = new Schema({
 
 //static create account method
 accountSchema.statics.createAccount = async function(username,password,email,address,occupation,dateofbith){
+    //validation
+    if(!username || !password || !email){
+        throw Error('Missing username or password or email')
+    }
+    if(!validator.isEmail(email)){
+        throw Error('Invalid Email')
+    }
+    if(!validator.isStrongPassword(password)){
+        throw Error ('Password must be at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol')
+    }
+
     const exists = await this.findOne({username})
     if(exists){
         throw Error('Username already exists')

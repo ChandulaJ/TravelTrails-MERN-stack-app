@@ -26,6 +26,6 @@ router.delete('/:id',deleteAccount)
 
 
 //update a account
-router.patch('/:id',updateAccount)
+router.put('/:id',updateAccount)
 
 module.exports = router
