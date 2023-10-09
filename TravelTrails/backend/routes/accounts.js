@@ -19,7 +19,7 @@ router.get('/',getAccounts)
 
 
 //create a new account
-router.post('/',createAccount)
+router.post('/signup',createAccount)
 
 //delete a account
 router.delete('/:id',deleteAccount)

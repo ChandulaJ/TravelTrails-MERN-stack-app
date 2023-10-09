@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 const Account = require('../models/accountModel')
+const jwt = require('jsonwebtoken')
+
+const createToken=(_id)=>{
+   return jwt.sign({_id},process.env.SECRET,{expiresIn:'3d'})
+}
 
 //get all accounts
 const getAccounts = async(req,res)=>{
@@ -26,7 +31,11 @@ const createAccount = async(req,res)=>{
 
     try {
         const account = await Account.createAccount(username,password,email,address,occupation,dateofbith)
-        res.status(200).json(account)
+
+        //create a token
+        const token = createToken(account._id)
+
+        res.status(200).json({username,token})
     } catch (error) {
         res.status(400).json({error:error.message})
     }
