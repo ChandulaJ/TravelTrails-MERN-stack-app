@@ -7,7 +7,8 @@ const {
     getAccount,
     getAccounts,
     deleteAccount,
-    updateAccount
+    updateAccount,
+    loginAccount
 } = require('../controllers/accountController')
 
 
@@ -20,6 +21,9 @@ router.get('/',getAccounts)
 
 //create a new account
 router.post('/signup',createAccount)
+
+//login to a existing account
+router.post('/login',loginAccount)
 
 //delete a account
 router.delete('/:id',deleteAccount)
