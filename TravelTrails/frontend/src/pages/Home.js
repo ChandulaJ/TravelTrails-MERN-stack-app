@@ -3,7 +3,6 @@ import { useSocialPostsContext } from "../hooks/useSocialPostsContext";
 
 //components
 import SocialPostDetails from "../components/SocialPostDetails";
-import AccountDetails from "../components/AccountDetails";
 import SocialPostForm from "../components/SocialPostForm";
 
 
@@ -70,11 +69,7 @@ const Home = () => {
       </div>
       <SocialPostForm />
 
-      <div className="accounts">
-        {accounts && accounts.map((account) => (
-          <AccountDetails key={account._id} account={account} />
-        ))}
-        </div>
+     
     </div>
   );
 };

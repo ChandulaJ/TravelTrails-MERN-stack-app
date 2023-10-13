@@ -39,12 +39,10 @@ const accountSchema = new Schema({
 //static signup method
 accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbith){
     //validation
-    if(!password){
-        throw Error('Missing password')
+    if(!username||!password){
+        throw Error('Missing username or password')
     }
-    if(!username){
-        throw Error('Missing username')
-    }
+   
     if(!validator.isEmail(email)){
         throw Error('Invalid Email')
     }
