@@ -1,18 +1,19 @@
 import { useState } from "react"
+import { useSignup } from "../hooks/useSignup"
 
 const Signup = () => {
   const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
-    const [occupation, setOccupation] = useState('')
-    const [dateofbirth, setDateofbirth] = useState('')
-
+  const [password, setPassword] = useState('')
+  const [address, setAddress] = useState('')
+  const [occupation, setOccupation] = useState('')
+  const [dateofbirth, setDateofbirth] = useState('')
+  const {signup, error, isLoading} = useSignup()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    console.log(username, password)
+    await signup(username,password,email,address,occupation,dateofbirth)
   }
 
   return (
@@ -21,43 +22,47 @@ const Signup = () => {
       
       <label>Username:</label>
       <input 
-        type="username" 
+        type="text" 
         onChange={(e) => setUsername(e.target.value)} 
         value={username} 
       />
+
+    
       <label>Password:</label>
       <input 
         type="password" 
         onChange={(e) => setPassword(e.target.value)} 
         value={password} 
       />
+
       <label>Email:</label>
+      <input 
+        type="email" 
+        onChange={(e) => setEmail(e.target.value)} 
+        value={email} 
+      />
+
+       <label>Address:</label>
         <input 
-            type="email" 
-            onChange={(e) => setEmail(e.target.value)} 
-            value={email}
-        />
-        <label>Address:</label>
-        <input 
-            type="address" 
+            type="text" 
             onChange={(e) => setAddress(e.target.value)} 
             value={address}
         />
         <label>Occupation:</label>
         <input 
-            type="occupation" 
+            type="text" 
             onChange={(e) => setOccupation(e.target.value)} 
             value={occupation}
         />
         <label>Date of Birth:</label>
         <input 
-            type="dateofbirth" 
+            type="date" 
             onChange={(e) => setDateofbirth(e.target.value)} 
             value={dateofbirth}
         />
 
-
-      <button>Sign up</button>
+      <button disabled={isLoading}>Sign up</button>
+      {error && <div className="error">{error}</div>}
     </form>
   )
 }

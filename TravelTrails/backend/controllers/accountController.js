@@ -26,11 +26,11 @@ const getAccount = async(req,res)=>{
 
 
 //create a new account
-const createAccount = async(req,res)=>{
+const signupAccount = async(req,res)=>{
     const {username,password,email,address,occupation,dateofbith} = req.body
 
     try {
-        const account = await Account.createAccount(username,password,email,address,occupation,dateofbith)
+        const account = await Account.signup(username,password,email,address,occupation,dateofbith)
 
         //create a token
         const token = createToken(account._id)
@@ -92,7 +92,7 @@ const loginAccount = async(req,res)=>{
 }
 
 module.exports = {
-    createAccount,
+    signupAccount,
     getAccount,
     getAccounts,
     deleteAccount,

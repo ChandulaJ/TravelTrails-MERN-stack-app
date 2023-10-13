@@ -5,13 +5,14 @@ const AccountForm =()=>{
     const[email,setEmail]=useState('')
     const[address,setAddress]=useState('')
     const[occupation,setOccupation]=useState('')
-    const[dateofbith,setDateofbirth]=useState('')
+    const[dateofbirth,setDateofbirth]=useState('')
     const[error,setError]=useState(null)
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
 
-        const account = {username,password,email,address,occupation,dateofbith}
+        const account = {username,password}
+        
         const response = await fetch('/api/accounts',{
             method:'POST',
             body:JSON.stringify(account),
@@ -34,6 +35,7 @@ const AccountForm =()=>{
             setOccupation('')
             setDateofbirth('')
         }
+    
       
     }
 
@@ -42,21 +44,21 @@ const AccountForm =()=>{
             <h3>Create an account</h3>
             <label>Username</label>
             <input
-            type='text'
+            type='username'
             onChange={(e)=>setUsername(e.target.value)}
             value ={username}
             />  
    
 <label>Password</label> 
             <input
-            type='text'
+            type='password'
             onChange={(e)=>setPassword(e.target.value)}
             value ={password}
             />
 
 <label>Email</label>
             <input
-            type='text'
+            type='email'
             onChange={(e)=>setEmail(e.target.value)}
             value ={email}
             />  
@@ -79,7 +81,7 @@ const AccountForm =()=>{
             <input
             type='date'
             onChange={(e)=>setDateofbirth(e.target.value)}
-            value ={dateofbith}
+            value ={dateofbirth}
             />
 
 <button>Create account</button>

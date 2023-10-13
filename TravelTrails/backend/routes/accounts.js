@@ -3,7 +3,7 @@
 const express = require('express')
 const router = express.Router()
 const {
-    createAccount,
+    signupAccount,
     getAccount,
     getAccounts,
     deleteAccount,
@@ -20,7 +20,7 @@ router.get('/',getAccounts)
 
 
 //create a new account
-router.post('/signup',createAccount)
+router.post('/signup',signupAccount)
 
 //login to a existing account
 router.post('/login',loginAccount)

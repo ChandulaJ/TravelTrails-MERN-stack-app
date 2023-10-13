@@ -19,7 +19,7 @@ const accountSchema = new Schema({
 
      email:{
         type:String,
-        required:true
+        required:false
      },
      address:{
         type:String,
@@ -36,11 +36,14 @@ const accountSchema = new Schema({
 },
 {timestamps:true})
 
-//static create account method
-accountSchema.statics.createAccount = async function(username,password,email,address,occupation,dateofbith){
+//static signup method
+accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbith){
     //validation
-    if(!username || !password || !email){
-        throw Error('Missing username or password or email')
+    if(!password){
+        throw Error('Missing password')
+    }
+    if(!username){
+        throw Error('Missing username')
     }
     if(!validator.isEmail(email)){
         throw Error('Invalid Email')
@@ -80,20 +83,20 @@ accountSchema.statics.updateAccount = async function(username,password,email,add
 
 //static login method
 
-accountSchema .statics.login = async function(username,password){
+accountSchema.statics.login = async function(username,password){
     if(!username || !password){
         throw Error('Missing username or password')
     }
-    const user = await this.findOne({username})
-    if(!user){
+    const account = await this.findOne({username})
+    if(!account){
         throw Error('Incorrect username')
     }
-    const match = await bcrypt.compare(password,user.password)
+    const match = await bcrypt.compare(password,account.password)
 
     if(!match){
         throw Error('Incorrect password')
     }
-    return user
+    return account
 }
 
-module.exports = mongoose.model('account',accountSchema)
+module.exports = mongoose.model('Account',accountSchema)
