@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useLogin } from "../hooks/useLogin"
 
 const Login = () => {
-  const [username, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const {login,error,isLoading} = useLogin()
 
@@ -19,8 +19,8 @@ const Login = () => {
       
       <label>Username:</label>
       <input 
-        type="username" 
-        onChange={(e) => setEmail(e.target.value)} 
+        type="text" 
+        onChange={(e) => setUsername(e.target.value)} 
         value={username} 
       />
       <label>Password:</label>

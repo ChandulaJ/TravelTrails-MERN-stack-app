@@ -25,12 +25,32 @@ const getAccount = async(req,res)=>{
 }
 
 
-//create a new account
+// Signup a new account
+
 const signupAccount = async(req,res)=>{
-    const {username,password,email,address,occupation,dateofbith} = req.body
+    const {username,password,email,address,occupation,dateofbirth} = req.body
 
     try {
-        const account = await Account.signup(username,password,email,address,occupation,dateofbith)
+        const account = await Account.signup(username,password,email,address,occupation,dateofbirth)
+
+        //create a token
+        const token = createToken(account._id)
+
+        res.status(200).json({username,token})
+    } catch (error) {
+        res.status(400).json({error:error.message})
+        console.log(error.message)
+    }
+}
+
+  
+ /*
+  const signupAccount = async(req,res)=>{
+    const{username,password} = req.body
+
+
+    try {
+        const account = await Account.signup(username,password)
 
         //create a token
         const token = createToken(account._id)
@@ -39,8 +59,10 @@ const signupAccount = async(req,res)=>{
     } catch (error) {
         res.status(400).json({error:error.message})
     }
+    
 }
-
+*/
+  
 
 //delete a account
 const deleteAccount = async(req,res)=>{

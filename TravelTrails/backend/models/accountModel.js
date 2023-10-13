@@ -21,6 +21,7 @@ const accountSchema = new Schema({
         type:String,
         required:false
      },
+     
      address:{
         type:String,
         required:false
@@ -29,7 +30,7 @@ const accountSchema = new Schema({
        type:String,
        required:false
     },
-    dateofbith:{
+    dateofbirth:{
        type:Date,
        required:false
     }
@@ -37,7 +38,7 @@ const accountSchema = new Schema({
 {timestamps:true})
 
 //static signup method
-accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbith){
+accountSchema.statics.signup= async function(username,password){
     //validation
     if(!username||!password){
         throw Error('Missing username or password')
@@ -59,13 +60,13 @@ accountSchema.statics.signup= async function(username,password,email,address,occ
     const hash = await bcrypt.hash(password,salt)
 
 
-    const account = await this.create({username,password:hash,email,address,occupation,dateofbith})
+    const account = await this.create({username,password:hash})
     return account
 }
 
-
+/*
 //static update account method
-accountSchema.statics.updateAccount = async function(username,password,email,address,occupation,dateofbith){
+accountSchema.statics.updateAccount = async function(username,password,email,address,occupation,dateofbirth){
     const exists = await this.findOne({username})
     if(exists){
         throw Error('Username already exists')
@@ -75,10 +76,10 @@ accountSchema.statics.updateAccount = async function(username,password,email,add
     const hash = await bcrypt.hash(password,salt)
 
 
-    const account = await this.create({username,password:hash,email,address,occupation,dateofbith})
+    const account = await this.create({username,password:hash,email,address,occupation,dateofbirth})
     return account
 }
-
+*/
 //static login method
 
 accountSchema.statics.login = async function(username,password){
