@@ -38,7 +38,7 @@ const accountSchema = new Schema({
 {timestamps:true})
 
 //static signup method
-accountSchema.statics.signup= async function(username,password){
+accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbirth){
     //validation
     if(!username||!password){
         throw Error('Missing username or password')

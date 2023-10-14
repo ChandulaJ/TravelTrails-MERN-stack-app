@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 
 //get all socialposts
 const getSocialPosts = async(req,res)=>{
-    const socialPosts=await SocialPost.find({}).sort({createdAt:-1})
+    const user_id = req.accounts._id
+    const socialPosts=await SocialPost.find({user_id}).sort({createdAt:-1})
     res.status(200).json(socialPosts)
 }
 
@@ -44,7 +45,8 @@ const createSocialPost = async(req,res)=>{
 
 
     try {
-        const socialPost = await SocialPost.create({author,contentText,photos,videos})
+        const user_id = req.accounts._id
+        const socialPost = await SocialPost.create({author,contentText,photos,videos,user_id})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})
