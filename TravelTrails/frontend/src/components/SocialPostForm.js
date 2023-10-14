@@ -1,8 +1,11 @@
 import React,{useState} from 'react'
 import {useSocialPostsContext} from '../hooks/useSocialPostsContext'
 
+import {useAuthContext} from '../hooks/useAuthContext'
+
 const SocialPostForm =()=>{
     const{dispatch} = useSocialPostsContext()
+    const{accounts}=useAuthContext()
     const[author,setAuthor]=useState('')
     const[contentText,setContentText]=useState('')
     const[photos,setPhotos]=useState('')
@@ -12,12 +15,19 @@ const SocialPostForm =()=>{
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
-
+        
+        if(!accounts) {
+            setError('You must be logged in')
+            return
+        }
         const socialPost = {author,contentText,photos,videos}
         const response = await fetch('/api/socialPosts',{
             method:'POST',
             body:JSON.stringify(socialPost),
-            headers:{'Content-Type':'application/json'}
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accounts.token}`
+            }
         })
         const json = await response.json()
 

@@ -1,13 +1,22 @@
 import { useSocialPostsContext } from "../hooks/useSocialPostsContext";
+import {useAuthContext} from "../hooks/useAuthContext";
 
 //date fns
 import { formatDistanceToNow } from 'date-fns'
 
 const SocialPostDetails = ({ socialPost }) => {
     const {dispatch} = useSocialPostsContext()
+    const {accounts} = useAuthContext()
+
     const handleClick = async() => {
+        if(!accounts){
+            return
+        }
         const response = await fetch('/api/socialPosts/'+socialPost._id,{
             method: 'DELETE',
+            headers:{
+                'Authorization': `Bearer ${accounts.token}`
+            }
         })
         const json = await response.json();
 
