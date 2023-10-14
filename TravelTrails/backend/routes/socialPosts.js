@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router()
+
 const {
     createSocialPost,
     getSocialPost,
@@ -7,6 +7,12 @@ const {
     deleteSocialPost
     
 } = require('../controllers/socialPostController')
+const requireAuth = require('../middleware/requireAuth')
+const router = express.Router()
+
+//require authentication for all routes
+router.use(requireAuth)
+
 
 //Get all socialPosts
 router.get('/',getSocialPosts)
