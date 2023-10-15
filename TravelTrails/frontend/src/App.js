@@ -13,10 +13,14 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <Navbar/>
+    
       <div className = "pages">
         <Routes>
-          <Route path = "/" element = {accounts? <Home/> : <Navigate to ="/login"/>}/>
+          <Route path = "/" element = { <div>
+                {accounts && <Navbar />}
+                {accounts ? <Home /> : <Navigate to="/login" />}
+              </div>}
+              />
           <Route path = "/signup" element = {!accounts? <Signup/> : <Navigate to="/"/>}/>
           <Route path = "/login" element = {!accounts? <Login/> : <Navigate to="/"/>}/>
         </Routes>
