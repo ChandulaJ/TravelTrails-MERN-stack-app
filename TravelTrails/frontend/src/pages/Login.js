@@ -14,8 +14,10 @@ const Login = () => {
   }
 
   return (
-    <form className="login" onSubmit={handleSubmit}>
-      <h3>Log In</h3>
+    <div className="login-container">
+    <form className="login" onSubmit={handleSubmit} >
+    <img src={"loginFormTop.png"} alt="Top Image" className="top-image" /> 
+      
       
       <label>Username:</label>
       <input 
@@ -29,13 +31,12 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)} 
         value={password} 
       />
-      
-        
-        
-
       <button disabled={isLoading}>Log in</button>
       {error && <div className="error">{error}</div>}
     </form>
+    <img src="loginPic.png" alt="LoginImage" className="loginPic" />
+    </div>
+    
   )
 }
 
