@@ -6,7 +6,6 @@ import {useAuthContext} from '../hooks/useAuthContext'
 const SocialPostForm =()=>{
     const{dispatch} = useSocialPostsContext()
     const{accounts}=useAuthContext()
-    const[author,setAuthor]=useState('')
     const[contentText,setContentText]=useState('')
     const[photos,setPhotos]=useState('')
     const[videos,setVideos]=useState('')
@@ -20,7 +19,7 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
-        const socialPost = {author,contentText,photos,videos}
+        const socialPost = {contentText,photos,videos}
         const response = await fetch('/api/socialPosts',{
             method:'POST',
             body:JSON.stringify(socialPost),
@@ -37,7 +36,6 @@ const SocialPostForm =()=>{
         }
 
         if(response.ok){
-            setAuthor('')
             setContentText('')
             setPhotos('')
             setVideos('')
@@ -52,13 +50,7 @@ const SocialPostForm =()=>{
     return(
         <form className='create' onSubmit = {handleSubmit}>
             <h3>Add a new post</h3>
-            <label>Post author</label>
-            <input
-            type='text'
-            onChange={(e)=>setAuthor(e.target.value)}
-            value ={author}
-            className={emptyFields.includes('author')?'error':''}
-            />
+          
 
 <label>Post contentText</label>
             <input

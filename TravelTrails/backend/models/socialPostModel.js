@@ -4,11 +4,6 @@ const Schema  = mongoose.Schema
 const socialPostSchema = new Schema({
  
 
-    author:{
-        type:String,
-        required:true
-    },
-
     contentText:{
         type:String,
         required:true

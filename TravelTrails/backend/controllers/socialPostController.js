@@ -35,14 +35,13 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 
 //create a new socialpost
 const createSocialPost = async(req,res)=>{
-    const {author,contentText,photos,videos} = req.body
+    const {contentText,photos,videos} = req.body
 
 
     let emptyFields = []
 
-    if(!author){
-        emptyFields.push('author')
-    }
+  
+    
     if(!contentText){
         emptyFields.push('contentText')
     }
@@ -53,7 +52,7 @@ const createSocialPost = async(req,res)=>{
 
     try {
         const user_id = req.accounts._id
-        const socialPost = await SocialPost.create({author,contentText,photos,videos,user_id})
+        const socialPost = await SocialPost.create({contentText,photos,videos,user_id})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})
