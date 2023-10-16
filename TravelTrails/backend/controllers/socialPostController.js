@@ -1,10 +1,17 @@
 const SocialPost = require('../models/socialPostModel')
 const mongoose = require('mongoose')
+const Account = require('../models/accountModel')
 
 //get all socialposts
 const getSocialPosts = async(req,res)=>{
     const user_id = req.accounts._id
-    const socialPosts=await SocialPost.find({user_id}).sort({createdAt:-1})
+    const user = await Account.findById(user_id);
+    const userFriends = user.friends;
+    userFriends.push(user_id);
+
+    const socialPosts = await SocialPost.find({ user_id: { $in: userFriends } }).sort({ createdAt: -1 });
+
+   // const socialPosts=await SocialPost.find({user_id}).sort({createdAt:-1})
     res.status(200).json(socialPosts)
 }
 

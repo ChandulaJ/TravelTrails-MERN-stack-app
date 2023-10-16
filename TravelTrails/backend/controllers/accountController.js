@@ -28,10 +28,10 @@ const getAccount = async(req,res)=>{
 // Signup a new account
 
 const signupAccount = async(req,res)=>{
-    const {username,password,email,address,occupation,dateofbirth} = req.body
+    const {username,password,email,address,occupation,dateofbirth,friends} = req.body
 
     try {
-        const account = await Account.signup(username,password,email,address,occupation,dateofbirth)
+        const account = await Account.signup(username,password,email,address,occupation,dateofbirth,friends)
 
         //create a token
         const token = createToken(account._id)
