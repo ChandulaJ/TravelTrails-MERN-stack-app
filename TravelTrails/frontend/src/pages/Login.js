@@ -21,7 +21,7 @@ const Login = () => {
     <div className="login-container">
     <div className="form-container">
     <form className="login" onSubmit={handleSubmit} >
-    <img src={"topImg.png"} alt="Top Image" className="topimage" /> 
+    <img src={"logo.png"} alt="Top Image" className="topimage" /> 
 
       <input 
         type="text" 

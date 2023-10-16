@@ -11,6 +11,7 @@ const Navbar = () => {
 
   return (
     <header>
+      <div className="header">
         <div className="container">
             <Link to="/">
            
@@ -37,6 +38,7 @@ const Navbar = () => {
             </div>
           )}
             </nav>
+        </div>
         </div>
     </header>
   );
