@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import {useSocialPostsContext} from '../hooks/useSocialPostsContext'
 
 import {useAuthContext} from '../hooks/useAuthContext'
+import { set } from 'date-fns'
 
 const SocialPostForm =()=>{
     const{dispatch} = useSocialPostsContext()
@@ -10,6 +11,7 @@ const SocialPostForm =()=>{
     const[photos,setPhotos]=useState('')
     const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
+    const[username_id,setUsername_id]=useState('')
     const [emptyFields,setEmptyFields]=useState([])
 
     const handleSubmit = async(e)=>{
@@ -57,7 +59,7 @@ const SocialPostForm =()=>{
             type='text'
             onChange={(e)=>setContentText(e.target.value)}
             value ={contentText}
-            className={emptyFields.includes('contentText')?'error':''}
+           // className={emptyFields.includes('contentText')?'error':''}
             />
 
 <label>Post photos</label>
@@ -74,9 +76,12 @@ const SocialPostForm =()=>{
             value ={videos}
             />
 <button>Add post</button>
+
 {error && <div className="error">{error}</div>}
             </form>
 
     )
+
 }
+
 export default SocialPostForm

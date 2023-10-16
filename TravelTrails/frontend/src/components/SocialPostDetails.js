@@ -26,13 +26,11 @@ const SocialPostDetails = ({ socialPost }) => {
         }
     }
    
-    // Get the username of the account with the corresponding user_id
-    const account =  accounts.findById(socialPost.user_id);
-    const username = account.username;
+
 
     return (
         <div className="socialPost-details">
-            <h4>{username}</h4>
+           <h4>{socialPost.username_id}</h4>
             <p><strong>Post description: </strong>{socialPost.contentText}</p>
             <p><strong>Photo: </strong>{socialPost.photo}</p>
             <p><strong>Video: </strong>{socialPost.video}</p>

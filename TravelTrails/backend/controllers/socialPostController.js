@@ -11,7 +11,6 @@ const getSocialPosts = async(req,res)=>{
 
     const socialPosts = await SocialPost.find({ user_id: { $in: userFriends } }).sort({ createdAt: -1 });
 
-   // const socialPosts=await SocialPost.find({user_id}).sort({createdAt:-1})
     res.status(200).json(socialPosts)
 }
 
@@ -37,11 +36,8 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 const createSocialPost = async(req,res)=>{
     const {contentText,photos,videos} = req.body
 
-
     let emptyFields = []
 
-  
-    
     if(!contentText){
         emptyFields.push('contentText')
     }
@@ -49,10 +45,11 @@ const createSocialPost = async(req,res)=>{
         return res.status(400).json({error:'Please fill all the fields',emptyFields})
     }
 
-
     try {
         const user_id = req.accounts._id
-        const socialPost = await SocialPost.create({contentText,photos,videos,user_id})
+        const user = await Account.findById(user_id);
+        const username_id = user.username;
+        const socialPost = await SocialPost.create({contentText,photos,videos,user_id,username_id})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})
