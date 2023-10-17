@@ -43,15 +43,12 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 const createSocialPost = async(req,res)=>{
     const {contentText,videos} = req.body
 
-    let emptyFields = []
+    //let emptyFields = []
 
     if(!contentText){
-        emptyFields.push('contentText')
+        return res.status(400).json({error:'Please fill content'})
     }
-    if(emptyFields.length>0){
-        return res.status(400).json({error:'Please fill all the fields',emptyFields})
-    }
-
+   
     let photos = null;
 
   if (req.file) {
