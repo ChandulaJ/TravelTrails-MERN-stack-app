@@ -28,6 +28,10 @@ const socialPostSchema = new Schema({
         user_address:{
             type:String,
             required:false
+        },
+        photoPath:{
+            type:String,
+            required:false
         }
 
 },

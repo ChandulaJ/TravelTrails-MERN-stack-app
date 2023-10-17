@@ -1,6 +1,8 @@
 const SocialPost = require('../models/socialPostModel')
 const mongoose = require('mongoose')
 const Account = require('../models/accountModel')
+const fs = require('fs');
+const path = require('path');
 
 //get all socialposts
 const getSocialPosts = async(req,res)=>{
@@ -36,21 +38,33 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 const createSocialPost = async(req,res)=>{
     const {contentText,photos,videos} = req.body
 
-    let emptyFields = []
+   
 
-    if(!contentText){
-        emptyFields.push('contentText')
-    }
-    if(emptyFields.length>0){
-        return res.status(400).json({error:'Please fill all the fields',emptyFields})
-    }
+    if (!contentText) {
+        return res.status(400).json({ error: 'Please provide content text' });
+      }
+    
 
     try {
+          // Decode the Base64-encoded photo and save it as an image
+      const photoData = photos.replace(/^data:image\/\w+;base64,/, '');
+      const photoBuffer = Buffer.from(photoData, 'base64');
+      const photoFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`; // Use _id as the filename
+  
+      // Define the path to the frontend/public directory
+const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
+
+// Construct the full path to save the photo
+const photoPathOr = path.join(frontendPublicPath, photoFileName);
+      fs.writeFileSync(photoPathOr, photoBuffer);
+const photoPath = photoFileName;
         const user_id = req.accounts._id
         const user = await Account.findById(user_id);
         const username_id = user.username;
         const user_address = user.address;
-        const socialPost = await SocialPost.create({contentText,photos,videos,user_id,username_id,user_address})
+        
+
+        const socialPost = await SocialPost.create({contentText,photos,videos,user_id,username_id,user_address,photoPath})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})

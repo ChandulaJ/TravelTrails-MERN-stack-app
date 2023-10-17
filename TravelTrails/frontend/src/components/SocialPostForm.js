@@ -8,11 +8,26 @@ const SocialPostForm =()=>{
     const{dispatch} = useSocialPostsContext()
     const{accounts}=useAuthContext()
     const[contentText,setContentText]=useState('')
-    const[photos,setPhotos]=useState('')
+    const [base64Photo, setBase64Photo] = useState('');
+    const[photos,setPhotos]=useState(null)
     const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
     const [emptyFields,setEmptyFields]=useState([])
 
+    const handleFileChange = (e) => {
+        const selectedPhoto = e.target.files[0];
+        if (selectedPhoto) {
+          const reader = new FileReader();
+      
+          reader.onload = (event) => {
+            const base64Photo = event.target.result;
+            setBase64Photo(base64Photo);
+          };
+      
+          reader.readAsDataURL(selectedPhoto);
+        }
+      };
+      
     const handleSubmit = async(e)=>{
         e.preventDefault()
         
@@ -20,7 +35,14 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
-        const socialPost = {contentText,photos,videos}
+        //const socialPost = {contentText,photos,videos}
+
+        const socialPost = {
+            contentText,
+            photos: base64Photo, 
+            videos,
+          };
+
         const response = await fetch('/api/socialPosts',{
             method:'POST',
             body:JSON.stringify(socialPost),
@@ -58,15 +80,13 @@ const SocialPostForm =()=>{
             type='text'
             onChange={(e)=>setContentText(e.target.value)}
             value ={contentText}
-           // className={emptyFields.includes('contentText')?'error':''}
+           
             />
-
 <label>Post photos</label>
-            <input
-            type='text'
-            onChange={(e)=>setPhotos(e.target.value)}
-            value ={photos}
-            />
+      <input
+        type="file" // Use type="file" for photo uploads
+        onChange={handleFileChange}
+      />
 
 <label>Post videos</label>
             <input
