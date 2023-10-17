@@ -5,6 +5,9 @@ const mongoose = require('mongoose')
 const app = express()
 const socialPostRoutes = require('./routes/socialPosts')  
 const accountRoutes = require('./routes/accounts')
+const path = require('path');
+
+
 
 //middleware
 app.use(express.json())
@@ -17,6 +20,10 @@ app.use((req,res,next)=>{
 
 
 //routes
+
+
+
+
 app.use('/api/socialPosts',socialPostRoutes)
 app.use('/api/accounts',accountRoutes)
 

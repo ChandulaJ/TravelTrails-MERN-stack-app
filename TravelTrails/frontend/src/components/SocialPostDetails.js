@@ -27,14 +27,14 @@ const SocialPostDetails = ({ socialPost }) => {
     }
    
 
-
+ 
     return (
         <div className="socialPost-details">
            <h4>{socialPost.username_id}</h4>
            <h4>{socialPost.user_address}</h4>
-            <p><strong>Post description: </strong>{socialPost.contentText}</p>
-            <p><strong>Photo: </strong>{socialPost.photo}</p>
-            <p><strong>Video: </strong>{socialPost.video}</p>
+            <p>{socialPost.contentText}</p>
+            <img src={socialPost.photoPath} alt="Post Photo" />
+
             <p>{formatDistanceToNow(new Date(socialPost.createdAt), { addSuffix: true })}</p>
             <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
         </div>
