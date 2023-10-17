@@ -11,7 +11,7 @@ const SocialPostForm =()=>{
     const[photos,setPhotos]=useState('')
     const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
-    //const [emptyFields,setEmptyFields]=useState([])
+    const [emptyFields,setEmptyFields]=useState([])
 
     const handlePhotoUpload = (e) => {
         const selectedFile = e.target.files[0];
@@ -26,11 +26,6 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
-        const formData = new FormData(); // Create a new FormData object
-        formData.append('contentText', contentText);
-        formData.append('photos', photos); // Append the selected photo file
-        formData.append('videos', videos);
-        
         const socialPost = {contentText,photos,videos}
         const response = await fetch('/api/socialPosts',{
             method:'POST',
@@ -45,7 +40,7 @@ const SocialPostForm =()=>{
 
         if(!response.ok){
             setError(json.error)
-            //setEmptyFields(json.emptyFields)
+            setEmptyFields(json.emptyFields)
         }
 
         if(response.ok){
@@ -53,6 +48,7 @@ const SocialPostForm =()=>{
             setPhotos('')
             setVideos('')
             setError(null)
+            setEmptyFields([])  
             console.log('socialPost added',json)
             dispatch({type:'CREATE_SOCIALPOST',payload:json})
 
