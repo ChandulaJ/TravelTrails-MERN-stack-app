@@ -1,35 +1,48 @@
-require ('dotenv').config()
-const express = require('express')
-const mongoose = require('mongoose')
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const app = express();
 
-const app = express()
-const socialPostRoutes = require('./routes/socialPosts')  
-const accountRoutes = require('./routes/accounts')
+app.use(cors());
 
-//middleware
-app.use(express.json())
+const socialPostRoutes = require('./routes/socialPosts');
+const accountRoutes = require('./routes/accounts');
 
-app.use((req,res,next)=>{
-    console.log(req.path,req.method)
-    next()
-})
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // destination folder for uploaded files
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname); // Set the file name
+    },
+});
 
+const upload = multer({ storage: storage });
 
+// Middleware
+app.use(express.json());
 
-//routes
-app.use('/api/socialPosts',socialPostRoutes)
-app.use('/api/accounts',accountRoutes)
+app.use((req, res, next) => {
+    console.log(req.path, req.method);
+    next();
+});
 
-//connect to db
+// Routes
+app.use('/api/socialPosts', socialPostRoutes);
+app.use('/api/accounts', accountRoutes);
+
+// Connect to the database and start the server
 mongoose.connect(process.env.MONGO_URI)
-.then((result)=>{
-    
-//listen for requests
-app.listen(process.env.PORT, () => {
-console.log('connected to db and listening on port ',process.env.PORT)
-})
-})
-.catch((err)=>{console.log(err)})
+    .then((result) => {
+        app.listen(process.env.PORT, () => {
+            console.log('Connected to the database and listening on port', process.env.PORT);
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
-
-process.env
+process.env;

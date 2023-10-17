@@ -34,7 +34,10 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 
 //create a new socialpost
 const createSocialPost = async(req,res)=>{
-    const {contentText,photos,videos} = req.body
+    const {contentText,videos} = req.body
+    
+
+    const photos = req.files.map((file) => file.path); 
 
     let emptyFields = []
 
