@@ -9,10 +9,12 @@ const socialPostSchema = new Schema({
         required:true
     },
 
-     photos:{
-        type:String,
-        required:false
-     },
+    photos: [
+        {
+            type: String,
+            required: false,
+        },
+    ],
      videos:{
         type:String,
         required:false

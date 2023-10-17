@@ -8,10 +8,16 @@ const SocialPostForm =()=>{
     const{dispatch} = useSocialPostsContext()
     const{accounts}=useAuthContext()
     const[contentText,setContentText]=useState('')
-    const[photos,setPhotos]=useState('')
+    const [photos, setPhotos] = useState([]);
     const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
     const [emptyFields,setEmptyFields]=useState([])
+
+    const handleFileChange = (e) => {
+        const files = e.target.files;
+        setPhotos([...photos, ...files]);
+    };
+
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
@@ -20,6 +26,29 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
+
+        const formData = new FormData();
+
+        formData.append('contentText', contentText);
+
+        for (const photo of photos) {
+            formData.append('photos', photo);
+        }
+
+        for (const video of videos) {
+            formData.append('videos', video);
+        }
+
+        const response = await fetch('/api/socialPosts', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${accounts.token}`,
+            },
+        });
+
+
+        /*
         const socialPost = {contentText,photos,videos}
         const response = await fetch('/api/socialPosts',{
             method:'POST',
@@ -29,6 +58,7 @@ const SocialPostForm =()=>{
                 'Authorization': `Bearer ${accounts.token}`
             }
         })
+        */
         const json = await response.json()
 
         if(!response.ok){
@@ -61,11 +91,12 @@ const SocialPostForm =()=>{
            // className={emptyFields.includes('contentText')?'error':''}
             />
 
-<label>Post photos</label>
+<label>Upload Photos</label>
             <input
-            type='text'
-            onChange={(e)=>setPhotos(e.target.value)}
-            value ={photos}
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleFileChange}
             />
 
 <label>Post videos</label>
