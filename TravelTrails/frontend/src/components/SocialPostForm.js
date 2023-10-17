@@ -11,7 +11,6 @@ const SocialPostForm =()=>{
     const[photos,setPhotos]=useState('')
     const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
-    const[username_id,setUsername_id]=useState('')
     const [emptyFields,setEmptyFields]=useState([])
 
     const handleSubmit = async(e)=>{

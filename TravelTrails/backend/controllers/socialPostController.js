@@ -49,7 +49,8 @@ const createSocialPost = async(req,res)=>{
         const user_id = req.accounts._id
         const user = await Account.findById(user_id);
         const username_id = user.username;
-        const socialPost = await SocialPost.create({contentText,photos,videos,user_id,username_id})
+        const user_address = user.address;
+        const socialPost = await SocialPost.create({contentText,photos,videos,user_id,username_id,user_address})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})

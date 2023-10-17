@@ -24,7 +24,12 @@ const socialPostSchema = new Schema({
         username_id:{
             type:String,
             required:false
+        },
+        user_address:{
+            type:String,
+            required:false
         }
+
 },
 {timestamps:true})
 
