@@ -13,12 +13,6 @@ const SocialPostForm =()=>{
     const[error,setError]=useState(null)
     const [emptyFields,setEmptyFields]=useState([])
 
-    const handlePhotoUpload = (e) => {
-        const selectedFile = e.target.files[0];
-        setPhotos(selectedFile);
-      };
-      
-
     const handleSubmit = async(e)=>{
         e.preventDefault()
         
@@ -29,10 +23,9 @@ const SocialPostForm =()=>{
         const socialPost = {contentText,photos,videos}
         const response = await fetch('/api/socialPosts',{
             method:'POST',
-            //body:JSON.stringify(socialPost),
-            body: formData,
+            body:JSON.stringify(socialPost),
             headers:{
-                //'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accounts.token}`
             }
         })
@@ -69,12 +62,11 @@ const SocialPostForm =()=>{
             />
 
 <label>Post photos</label>
-<input
-  type="file"
-  onChange={handlePhotoUpload} 
-  accept="image/*" // Specify that only image files are allowed
-/>
-
+            <input
+            type='text'
+            onChange={(e)=>setPhotos(e.target.value)}
+            value ={photos}
+            />
 
 <label>Post videos</label>
             <input

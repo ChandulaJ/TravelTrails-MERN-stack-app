@@ -1,13 +1,6 @@
 const SocialPost = require('../models/socialPostModel')
 const mongoose = require('mongoose')
 const Account = require('../models/accountModel')
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2; 
-
-// Multer setup
-const storage = multer.memoryStorage(); // Store the file in memory
-const upload = multer({ storage: storage });
-
 
 //get all socialposts
 const getSocialPosts = async(req,res)=>{
@@ -41,7 +34,7 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 
 //create a new socialpost
 const createSocialPost = async(req,res)=>{
-    const {contentText,videos} = req.body
+    const {contentText,photos,videos} = req.body
 
     let emptyFields = []
 
@@ -52,17 +45,6 @@ const createSocialPost = async(req,res)=>{
         return res.status(400).json({error:'Please fill all the fields',emptyFields})
     }
 
-    let photos = null;
-
-  if (req.file) {
-    // If a photo file was uploaded, handle it with Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.buffer, {
-      folder: 'your-folder-name',
-      resource_type: 'auto', // 'auto' detects whether it's an image or video
-    });
-    photos = result.secure_url;
-
-}
     try {
         const user_id = req.accounts._id
         const user = await Account.findById(user_id);
@@ -73,8 +55,6 @@ const createSocialPost = async(req,res)=>{
     } catch (error) {
         res.status(400).json({error:error.message})
     }
-
-    
 }
 
 
