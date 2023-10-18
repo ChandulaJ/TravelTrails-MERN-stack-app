@@ -262,3 +262,45 @@ form.login {
 .App{
   background-color: #D9F6F0;
 }
+
+.signup-container {
+  display: flex;
+  background-image:url("F:\GithubRepos\TravelTrails-MERN-stack-app\TravelTrails\frontend\public\signupBackdrop.png"); 
+  background-size: cover; 
+  background-position: center center; 
+  background-repeat: no-repeat; 
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+form.signup {
+  flex: 1; /* Take up available space */
+  margin: 0 2rem; /* Add some margin for spacing */
+  margin-left:55%; /* Right-align the form */
+  width: 100%;
+  padding: 20px;
+  background: rgba(221, 238, 244, 0.2);
+  border-radius: 27px;
+  /* Your form styles here */
+}
+.signup-container h4{
+  text-align: center;
+  font-size:x-large;
+}
+
+.signup-input {
+  background-color: rgba(203, 221, 242, 0.5);
+  border-radius: 20px;
+  height: 60px;
+  font-family: "Poppins";
+  font-size: large;
+  color:black(25, 24, 24); 
+}
+
+.signup-input::placeholder {
+  color: #949191; 
+
+}

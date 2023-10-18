@@ -9,6 +9,7 @@ const Navbar = () => {
     logout()
   }
 
+
   return (
     <header>
       <div className="header">
@@ -33,8 +34,9 @@ const Navbar = () => {
           )}
           {!accounts && (
             <div>
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Signup</Link>
+           <Link to="/login">
+              <button>Log in</button>
+              </Link>
             </div>
           )}
             </nav>

@@ -20,46 +20,59 @@ const Signup = () => {
   }
 
   return (
+    <div className="signup-container">
     <form className="signup" onSubmit={handleSubmit}>
-      <h3>Sign Up</h3>
+      <h4>Create Account</h4>
       
-      <label>Username:</label>
+      
       <input 
         type="text"  //------------------------------------
         onChange={(e) => setUsername(e.target.value)} 
         value={username} 
+        placeholder="Username"
+        className="signup-input"
       />
-      <label>Password:</label>
+      
       <input 
         type="password" 
         onChange={(e) => setPassword(e.target.value)} 
         value={password} 
+        placeholder="Password"
+        className="signup-input"
       />
       
-      <label>Email:</label>
+      
       <input 
         type="email" 
         onChange={(e) => setEmail(e.target.value)} 
         value={email} 
+        placeholder="Email"
+        className="signup-input"
       />
 
-       <label>Address:</label>
+       
         <input 
             type="text" 
             onChange={(e) => setAddress(e.target.value)} 
             value={address}
+            placeholder="Address"
+            className="signup-input"
         />
-        <label>Occupation:</label>
+        
         <input 
             type="text" 
             onChange={(e) => setOccupation(e.target.value)} 
             value={occupation}
+            placeholder="Occupation"
+            className="signup-input"
         />
-        <label>Date of Birth:</label>
+       
         <input 
             type="date" 
             onChange={(e) => setDateofbirth(e.target.value)} 
             value={dateofbirth}
+            placeholder="Date of Birth"
+            className="signup-input"
         />
         
 
@@ -67,6 +80,7 @@ const Signup = () => {
       {error && <div className="error">{error}</div>}
       
     </form>
+    </div>
     
   )
 }

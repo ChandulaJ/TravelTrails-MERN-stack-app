@@ -21,7 +21,12 @@ function App() {
                 {accounts ? <Home /> : <Navigate to="/login" />}
               </div>}
               />
-          <Route path = "/signup" element = {!accounts? <Signup/> : <Navigate to="/"/>}/>
+          <Route path = "/signup" element = { <div>
+                { <Navbar />}
+                {!accounts? <Signup/> : <Navigate to="/"/>}
+                </div>}
+                />
+                
           <Route path = "/login" element = {!accounts? <Login/> : <Navigate to="/"/>}/>
         </Routes>
 
