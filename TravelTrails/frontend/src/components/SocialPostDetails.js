@@ -105,6 +105,9 @@ const SocialPostDetails = ({ socialPost }) => {
 
     <div>
                 <strong>Comments:</strong>
+        <div className="separator">
+        <div className="line"></div>
+      </div>
                 {socialPost.comments.map((comment, index) => (
                     <div key={index}>
                         <p>{comment.comment_text}</p>

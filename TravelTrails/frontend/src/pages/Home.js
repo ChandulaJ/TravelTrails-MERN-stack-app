@@ -75,15 +75,23 @@ const Home = () => {
 */
   return (
     <div className="home">
-      <div className="socialPosts">
+       <div className="home-userData">
+       <h4>{"username"}</h4>
+           <h4>{"address"}</h4>
+            <p>{"other data"}</p>
+        </div>
+      <div className="home-socialPosts">
+      <SocialPostForm />
         {socialPosts && socialPosts.map((socialPost) => (
           <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
         ))}
       </div>
-      <SocialPostForm />
+      
+    
 
      
     </div>
+
   );
 };
 

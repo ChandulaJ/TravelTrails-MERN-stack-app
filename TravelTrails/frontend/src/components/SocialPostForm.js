@@ -10,7 +10,6 @@ const SocialPostForm =()=>{
     const[contentText,setContentText]=useState('')
     const [base64Photo, setBase64Photo] = useState('');
     const[photos,setPhotos]=useState(null)
-    const[videos,setVideos]=useState('')
     const[error,setError]=useState(null)
     const [emptyFields,setEmptyFields]=useState([])
 
@@ -35,12 +34,12 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
-        //const socialPost = {contentText,photos,videos}
+        //const socialPost = {contentText,photos}
 
         const socialPost = {
             contentText,
             photos: base64Photo, 
-            videos,
+            
           };
 
         const response = await fetch('/api/socialPosts',{
@@ -61,7 +60,6 @@ const SocialPostForm =()=>{
         if(response.ok){
             setContentText('')
             setPhotos('')
-            setVideos('')
             setError(null)
             setEmptyFields([])  
             console.log('socialPost added',json)
@@ -71,7 +69,7 @@ const SocialPostForm =()=>{
     }
 
     return(
-        <form className='create' onSubmit = {handleSubmit}>
+        <form className='create-SocialPost' onSubmit = {handleSubmit}>
             <h3>Add a new post</h3>
           
 
@@ -88,12 +86,7 @@ const SocialPostForm =()=>{
         onChange={handleFileChange}
       />
 
-<label>Post videos</label>
-            <input
-            type='text'
-            onChange={(e)=>setVideos(e.target.value)}
-            value ={videos}
-            />
+
 <button>Add post</button>
 
 {error && <div className="error">{error}</div>}

@@ -35,8 +35,8 @@ header a {
 /* homepage */
 .home {
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 20px;
 }
 .socialPost-details {
   background: #fff;
@@ -303,4 +303,37 @@ form.signup {
 .signup-input::placeholder {
   color: #949191; 
 
+}
+
+.socialPost-details separator{
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.socialPost-details line {
+  flex-grow: 2;
+  height: 1px;
+  background-color: #6A6565; 
+  margin: 0 10px;
+}
+.socialPost-details{
+  background-color:#a9e1f4;
+  border-radius: 30px;
+}
+
+
+.home-userData{
+  background-color:#a9e1f4;
+  border-radius: 30px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.create-SocialPost{
+  background-color:#a9e1f4;
+  border-radius: 30px;
+  padding: 20px;
+  margin-top: 20px;
+ 
 }

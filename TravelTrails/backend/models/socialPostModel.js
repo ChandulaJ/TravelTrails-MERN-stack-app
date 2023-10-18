@@ -13,10 +13,7 @@ const socialPostSchema = new Schema({
         type:String,
         required:false
      },
-     videos:{
-        type:String,
-        required:false
-     },
+   
      user_id:{
             type:String,
             required:true

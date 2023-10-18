@@ -36,7 +36,7 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 
 //create a new socialpost
 const createSocialPost = async(req,res)=>{
-    const {contentText,photos,videos} = req.body
+    const {contentText,photos} = req.body
 
    
 
@@ -64,7 +64,7 @@ const photoPath = photoFileName;
         const user_address = user.address;
         
 
-        const socialPost = await SocialPost.create({contentText,photos,videos,user_id,username_id,user_address,photoPath})
+        const socialPost = await SocialPost.create({contentText,photos,user_id,username_id,user_address,photoPath})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})
