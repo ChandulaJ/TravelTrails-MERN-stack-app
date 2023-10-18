@@ -32,7 +32,20 @@ const socialPostSchema = new Schema({
         photoPath:{
             type:String,
             required:false
-        }
+        },
+        comments: [
+            {
+                comment_text: {
+                    type: String,
+                    required: false
+                },
+                comment_accountId: {
+                    type: String,
+                    required: false
+                }
+            }
+        ]
+    
 
 },
 {timestamps:true})

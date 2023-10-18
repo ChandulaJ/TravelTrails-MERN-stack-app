@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const app = express()
 const socialPostRoutes = require('./routes/socialPosts')  
 const accountRoutes = require('./routes/accounts')
+const commentsRoutes = require('./routes/comments')
 const path = require('path');
 
 
@@ -21,11 +22,9 @@ app.use((req,res,next)=>{
 
 //routes
 
-
-
-
 app.use('/api/socialPosts',socialPostRoutes)
 app.use('/api/accounts',accountRoutes)
+app.use('/api/socialPosts',commentsRoutes)
 
 //connect to db
 mongoose.connect(process.env.MONGO_URI)
