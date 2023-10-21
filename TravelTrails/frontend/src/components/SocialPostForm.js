@@ -9,7 +9,7 @@ const SocialPostForm =()=>{
     const{accounts}=useAuthContext()
     const[contentText,setContentText]=useState('')
     const [base64Photo, setBase64Photo] = useState('');
-    const[photos,setPhotos]=useState(null)
+    const[photo,setPhotos]=useState(null)
     const[error,setError]=useState(null)
     const [emptyFields,setEmptyFields]=useState([])
 
@@ -34,11 +34,11 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
-        //const socialPost = {contentText,photos}
+        //const socialPost = {contentText,photo}
 
         const socialPost = {
             contentText,
-            photos: base64Photo, 
+            photo: base64Photo, 
             
           };
 
@@ -80,7 +80,7 @@ const SocialPostForm =()=>{
             value ={contentText}
            
             />
-<label>Post photos</label>
+<label>Post photo</label>
       <input
         type="file" // Use type="file" for photo uploads
         onChange={handleFileChange}

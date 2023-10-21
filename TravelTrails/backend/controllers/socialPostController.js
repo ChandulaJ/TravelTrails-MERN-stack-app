@@ -36,7 +36,7 @@ if(!mongoose.Types.ObjectId.isValid(id)){
 
 //create a new socialpost
 const createSocialPost = async(req,res)=>{
-    const {contentText,photos} = req.body
+    const {contentText,photo} = req.body
 
    
 
@@ -47,7 +47,7 @@ const createSocialPost = async(req,res)=>{
 
     try {
           // Decode the Base64-encoded photo and save it as an image
-      const photoData = photos.replace(/^data:image\/\w+;base64,/, '');
+      const photoData = photo.replace(/^data:image\/\w+;base64,/, '');
       const photoBuffer = Buffer.from(photoData, 'base64');
       const photoFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`; // Use _id as the filename
   
@@ -64,7 +64,7 @@ const photoPath = photoFileName;
         const user_address = user.address;
         
 
-        const socialPost = await SocialPost.create({contentText,photos,user_id,username_id,user_address,photoPath})
+        const socialPost = await SocialPost.create({contentText,photo,user_id,username_id,user_address,photoPath})
         res.status(200).json(socialPost)
     } catch (error) {
         res.status(400).json({error:error.message})

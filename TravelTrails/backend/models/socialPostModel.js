@@ -9,7 +9,7 @@ const socialPostSchema = new Schema({
         required:true
     },
 
-     photos:{
+     photo:{
         type:String,
         required:false
      },
