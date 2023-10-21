@@ -79,6 +79,13 @@ const Home = () => {
        <h4>{"username"}</h4>
            <h4>{"address"}</h4>
             <p>{"other data"}</p>
+            
+          <img
+            src={accounts.profilePic}
+            alt="Profile Picture"
+            className="profile-pic"
+          />
+        
         </div>
       <div className="home-socialPosts">
       <SocialPostForm />

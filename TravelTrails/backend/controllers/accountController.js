@@ -28,6 +28,48 @@ const getAccount = async(req,res)=>{
 
 // Signup a new account
 
+const signupAccount = async (req, res) => {
+    const { username, password, email, address, occupation, dateofbirth, friends } = req.body;
+  
+    try {
+      let profilePicPath = '';
+  
+      if (req.file) {
+        
+        const profilePicFileName = `${account._id}_${Date.now()}.png`; // Include account ID in the filename
+  
+        // Rest of the code to save the profile picture remains the same
+        const profilePicData = req.file.buffer;
+        const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
+        const profilePicPathOr = path.join(frontendPublicPath, profilePicFileName);
+        console.log('Saving profile picture to:', profilePicPathOr); 
+        fs.writeFileSync(profilePicPathOr, profilePicData);
+        profilePicPath = profilePicFileName;
+      }
+  
+      const account = await Account.signup(
+        username,
+        password,
+        email,
+        address,
+        occupation,
+        dateofbirth,
+        friends,
+        profilePicPath
+      );
+  
+      // Create a token
+      const token = createToken(account._id);
+      const acc_id = account._id;
+  
+      res.status(200).json({ acc_id, username, token, email, address, occupation, dateofbirth, friends });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
+  
+  
+/*
 const signupAccount = async(req,res)=>{
     const {username,password,email,address,occupation,dateofbirth,friends} = req.body
 
@@ -45,26 +87,8 @@ const signupAccount = async(req,res)=>{
     }
 }
 
-  
- /*
-  const signupAccount = async(req,res)=>{
-    const{username,password} = req.body
+  */
 
-
-    try {
-        const account = await Account.signup(username,password)
-
-        //create a token
-        const token = createToken(account._id)
-
-        res.status(200).json({username,token})
-    } catch (error) {
-        res.status(400).json({error:error.message})
-    }
-    
-}
-*/
-  
 
 //delete a account
 const deleteAccount = async(req,res)=>{
@@ -82,62 +106,50 @@ res.status(200).json(account)
 }
 
 //update a account
-const updateAccount = async(req,res)=>{
-    
-    const {id} =req.params
-
+const updateAccount = async (req, res) => {
+    const { id } = req.params;
     let {
-        
+      username,
+      email,
+      address,
+      occupation,
+      dateofbirth,
+    } = req.body;
+  
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: 'No such Account' });
+    }
+  
+    try {
+      let profilePicPath = '';
+  
+      if (req.file) {
+        // If a profilePic file was uploaded, save it and update the profilePicPath
+        const profilePicData = req.file.buffer;
+        const profilePicFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`;
+  
+        const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
+        const profilePicPathOr = path.join(frontendPublicPath, profilePicFileName);
+  
+        fs.writeFileSync(profilePicPathOr, profilePicData);
+        profilePicPath = profilePicFileName;
+      }
+  
+      const account = await Account.updateAccount(
+        id,
         username,
-        password,
         email,
         address,
         occupation,
         dateofbirth,
-        profilePic,
-        profilePicPath,
-    } = req.body;
-
-     if(!mongoose.Types.ObjectId.isValid(id)){
-        console.log(id);
-         return res.status(404).json({error:'No such Account'})
-       
-     }
-   
-    try {
-
-             // Decode the Base64-encoded profilePic and save it as an image
-             if (!profilePic) {profilePic = "default-profile-pic.png";}
-        const profilePicData = profilePic.replace(/^data:image\/\w+;base64,/, '');
-        const profilePicBuffer = Buffer.from(profilePicData, 'base64');
-        const profilePicFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`;
+        profilePicPath
+      );
   
-        const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
-
-        const profilePicPathOr = path.join(frontendPublicPath, profilePicFileName);
-        fs.writeFileSync(profilePicPathOr, profilePicBuffer);
-        const profilePicPath = profilePicFileName;
-
-
-        const account = await Account.updateAccount(
-            id,
-            username,
-            email,
-            address,
-            occupation,
-            dateofbirth,
-            profilePic, 
-            profilePicPath 
-        );
- 
-    
- 
- res.status(200).json(account)
-} catch (error) {
-    res.status(400).json({ error: error.message });
-}
-};
-
+      res.status(200).json(account);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
 //login account
 
 const loginAccount = async(req,res)=>{

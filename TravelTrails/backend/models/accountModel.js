@@ -50,7 +50,8 @@ const accountSchema = new Schema({
 {timestamps:true})
 
 //static signup method
-accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbirth,friends){
+accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbirth,friends, profilePic,
+    profilePicPath){
     //validation
     if(!username||!password){
         throw Error('Missing username or password')
@@ -72,7 +73,8 @@ accountSchema.statics.signup= async function(username,password,email,address,occ
     const hash = await bcrypt.hash(password,salt)
 
 
-    const account = await this.create({username,password:hash,email,address,occupation,dateofbirth,friends})
+    const account = await this.create({username,password:hash,email,address,occupation,dateofbirth,friends, profilePic,
+        profilePicPath})
     return account
 }
 

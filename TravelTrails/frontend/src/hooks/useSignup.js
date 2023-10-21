@@ -1,37 +1,60 @@
-import { useState } from 'react'
-import { useAuthContext } from './useAuthContext'
+import { useState } from 'react';
+import { useAuthContext } from './useAuthContext';
 
 export const useSignup = () => {
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(null)
-  const { dispatch } = useAuthContext()
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const { dispatch } = useAuthContext();
 
-  const signup = async (username, password,email,address,occupation,dateofbirth) => {
-    setIsLoading(true)
-    setError(null)
+  const signup = async (username, password, email, address, occupation, dateofbirth, profilePic) => {
+    setIsLoading(true);
+    setError(null);
 
-    const response = await fetch('/api/accounts/signup', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ username, password,email,address,occupation,dateofbirth })
-    })
-    const json = await response.json()
+    try {
+      // Read the selected file as a data URL
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const profilePicData = event.target.result;
+        try {
+          const response = await fetch('/api/accounts/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username,
+              password,
+              email,
+              address,
+              occupation,
+              dateofbirth,
+              profilePic: profilePicData,
+            }),
+          });
+          const json = await response.json();
 
-    if (!response.ok) {
-      setIsLoading(false)
-      setError(json.error)
+          if (!response.ok) {
+            setIsLoading(false);
+            setError(json.error);
+          } else {
+            // Handle success as before
+            localStorage.setItem('accounts', JSON.stringify(json));
+            dispatch({ type: 'LOGIN', payload: json });
+            setIsLoading(false);
+          }
+        } catch (error) {
+          setError(`Error signing up: ${error.message}`);
+          setIsLoading(false);
+        }
+      };
+
+      // Read the profilePic file as a data URL
+      reader.readAsDataURL(profilePic);
+    } catch (error) {
+      setError(`Error reading profile picture: ${error.message}`);
+      setIsLoading(false);
     }
-    if (response.ok) {
-      // save the user to local storage
-      localStorage.setItem('accounts', JSON.stringify(json))
+  };
 
-      // update the auth context
-      dispatch({type: 'LOGIN', payload: json})
-
-      // update loading state
-      setIsLoading(false)
-    }
-  }
-
-  return { signup, isLoading, error }
-}
+  return { signup, isLoading, error };
+};
