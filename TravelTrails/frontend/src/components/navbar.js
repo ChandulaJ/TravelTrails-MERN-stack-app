@@ -39,6 +39,11 @@ const Navbar = () => {
               </Link>
             </div>
           )}
+           <div>
+           <Link to="/settings">
+              <button>Account Settings</button>
+              </Link>
+            </div>
             </nav>
         </div>
         </div>

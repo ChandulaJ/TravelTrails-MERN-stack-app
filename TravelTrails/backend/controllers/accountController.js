@@ -35,8 +35,9 @@ const signupAccount = async(req,res)=>{
 
         //create a token
         const token = createToken(account._id)
+        const acc_id = account._id
 
-        res.status(200).json({username,token})
+        res.status(200).json({username,token,email,address,occupation,dateofbirth,friends})
     } catch (error) {
         res.status(400).json({error:error.message})
         console.log(error.message)

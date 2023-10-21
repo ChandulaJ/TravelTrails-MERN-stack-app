@@ -5,6 +5,7 @@ import { CommentsContextProvider } from './context/CommentContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Settings from './pages/Settings';
 import Navbar from './components/navbar';
 
 
@@ -30,6 +31,8 @@ function App() {
                 />
                 
           <Route path = "/login" element = {!accounts? <Login/> : <Navigate to="/"/>}/>
+          <Route path="/settings" element={accounts ? <Settings/> : <Navigate to="/login" />} />
+
         </Routes>
 
       </div>
