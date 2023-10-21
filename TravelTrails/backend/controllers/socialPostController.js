@@ -49,7 +49,7 @@ const createSocialPost = async(req,res)=>{
           // Decode the Base64-encoded photo and save it as an image
       const photoData = photo.replace(/^data:image\/\w+;base64,/, '');
       const photoBuffer = Buffer.from(photoData, 'base64');
-      const photoFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`; // Use _id as the filename
+      const photoFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`;
   
       // Define the path to the frontend/public directory
 const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');

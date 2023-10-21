@@ -8,15 +8,15 @@ const Signup = () => {
   const [address,setAddress] = useState('')
   const [occupation,setOccupation] = useState('')
   const [dateofbirth,setDateofbirth] = useState('')
-
+const[profilePic,setProfilePic]=useState("")
 
   const {signup,error,isLoading} = useSignup()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await signup(username, password,email,address,occupation,dateofbirth)
-    console.log(username, password,email,address,occupation,dateofbirth)
+    await signup(username, password,email,address,occupation,dateofbirth,profilePic)
+    console.log(username, password,email,address,occupation,dateofbirth,profilePic)
   }
 
   return (
