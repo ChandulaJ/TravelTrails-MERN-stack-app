@@ -44,6 +44,9 @@ const Settings = () => {
   return (
     <div className="settings">
       <div className="settings-userData">
+     
+      <img className="settings-img" src="settingsPg.jpg" alt="MountainsImg"></img>
+      
         <h4>Username</h4>
         <p>{accounts.username}</p>
         <h4>Email</h4>
