@@ -45,6 +45,7 @@ header a {
   padding: 20px;
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  
 }
 .socialPost-details h4 {
   margin: 0 0 10px 0;
@@ -336,4 +337,18 @@ form.signup {
   padding: 20px;
   margin-top: 20px;
  
+}
+
+.post-photo{
+ display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 30px;
+  max-width: 100%;
+  height: auto;
+}
+
+.comment-section{
+  display: flex;
+  flex-direction: column;
 }
