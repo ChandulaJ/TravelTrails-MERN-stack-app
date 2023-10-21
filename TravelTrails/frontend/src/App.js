@@ -1,5 +1,6 @@
 import {BrowserRouter ,Routes, Route,Navigate} from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
+import { CommentsContextProvider } from './context/CommentContext';
 //pages and components
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -11,6 +12,7 @@ function App() {
   const {accounts} = useAuthContext();
 
   return (
+    <CommentsContextProvider>
     <div className="App">
       <BrowserRouter>
     
@@ -33,6 +35,7 @@ function App() {
       </div>
       </BrowserRouter>
     </div>
+    </CommentsContextProvider>
   );
 }
 

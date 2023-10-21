@@ -111,6 +111,5 @@ module.exports = {
     getSocialPost,
     getSocialPosts,
     deleteSocialPost
-    
-    
+
 }

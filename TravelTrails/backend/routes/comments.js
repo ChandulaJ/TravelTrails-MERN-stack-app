@@ -5,7 +5,8 @@ const router = express.Router();
 const {
     createComment,
     getComments,
-    deleteComment
+    deleteComment,
+    updateComment
 } = require('../controllers/commentController');
 const requireAuth = require('../middleware/requireAuth');
 
@@ -20,5 +21,8 @@ router.post('/:postId/comments', createComment);
 
 // Delete a comment for a specific social post
 router.delete('/:postId/comments/:commentId', deleteComment);
+
+// Update a comment for a specific social post
+router.put('/:postId/comments/:commentId', updateComment); 
 
 module.exports = router;
