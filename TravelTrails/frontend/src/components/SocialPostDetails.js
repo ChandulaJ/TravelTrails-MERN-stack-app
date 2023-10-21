@@ -100,10 +100,10 @@ const SocialPostDetails = ({ socialPost }) => {
            <h4>{socialPost.username_id}</h4>
            <h4>{socialPost.user_address}</h4>
             <p>{socialPost.contentText}</p>
-            <img src={socialPost.photoPath} alt="Post Photo" />
+            <img className="post-photo" src={socialPost.photoPath} alt="Post Photo" />
 
 
-    <div>
+    <div className="comment-section">
                 <strong>Comments:</strong>
         <div className="separator">
         <div className="line"></div>
