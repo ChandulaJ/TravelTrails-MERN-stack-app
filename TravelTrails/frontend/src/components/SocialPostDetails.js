@@ -1,7 +1,7 @@
 
 import { useSocialPostsContext } from "../hooks/useSocialPostsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useState, useEffect } from "react"; 
+import React,{ useState, useEffect } from "react"; 
 
 // date fns
 import { formatDistanceToNow } from 'date-fns'
@@ -74,8 +74,30 @@ const SocialPostDetails = ({ socialPost }) => {
         }
     }
 
+    const handleDeleteComment = async (commentId) => {
+        if (!accounts) {
+          return;
+        }
+    
+        const response = await fetch(`/api/socialPosts/${socialPost._id}/comments/${commentId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accounts.token}`,
+          },
+        });
+    
+        if (response.ok) {
+          // Remove the deleted comment from the state.
+          setComments((prevComments) => prevComments.filter((comment) => comment._id !== commentId));
+          fetchComments();
+          
+        } else {
+          console.error("Error deleting comment. Status:", response.status);
+        }
+      };
 
-    const handleClick = async () => {
+
+    const handleSocialPostDelete = async () => {
         if (!accounts) {
             return;
         }
@@ -112,6 +134,9 @@ const SocialPostDetails = ({ socialPost }) => {
                     <div key={index}>
                         <p>{comment.comment_text}</p>
                         <p>{comment.comment_accountId}</p>
+                        {accounts && accounts._id === comment.comment_accountId && (
+              <button onClick={() => handleDeleteComment(comment._id)}>Delete Comment</button>
+            )}
                     </div>
                 ))}
             </div>
@@ -125,7 +150,7 @@ const SocialPostDetails = ({ socialPost }) => {
             <button onClick={handleAddComment}>Add Comment</button>
 
             <p>{formatDistanceToNow(new Date(socialPost.createdAt), { addSuffix: true })}</p>
-            <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
+            <span className="material-symbols-outlined" onClick={handleSocialPostDelete}>delete</span>
         </div>
     )
 }
