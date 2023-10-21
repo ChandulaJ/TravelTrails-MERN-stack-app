@@ -81,10 +81,16 @@ const SocialPostForm =()=>{
            
             />
 <label>Post photo</label>
-      <input
-        type="file" // Use type="file" for photo uploads
-        onChange={handleFileChange}
-      />
+<input
+  type="file"
+  accept=".jpg, .jpeg, .png" // Limit accepted file types
+  onChange={handleFileChange}
+  required
+/>
+
+{base64Photo && base64Photo.length > 10 * 1024 * 1024 && (
+  <div className="error">File size exceeds 10MB.</div>
+)}
 
 
 <button>Add post</button>

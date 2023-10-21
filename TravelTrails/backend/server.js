@@ -7,10 +7,16 @@ const socialPostRoutes = require('./routes/socialPosts')
 const accountRoutes = require('./routes/accounts')
 const commentsRoutes = require('./routes/comments')
 const path = require('path');
+const bodyParser = require('body-parser'); 
 
 
 
 //middleware
+
+app.use(bodyParser.json({ limit: '10mb' })); 
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); 
+
+
 app.use(express.json())
 
 app.use((req,res,next)=>{
