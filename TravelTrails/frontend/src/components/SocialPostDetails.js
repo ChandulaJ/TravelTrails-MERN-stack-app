@@ -168,7 +168,9 @@ const SocialPostDetails = ({ socialPost }) => {
                 <div className="separator">
                     <div className="line"></div>
                 </div>
+                
                 {socialPost.comments.map((comment) => (
+                    <div className="comment-add-container">
                     <div key={comment._id}>
                         {editingCommentId === comment._id ? (
                             <>
@@ -189,21 +191,29 @@ const SocialPostDetails = ({ socialPost }) => {
                         )}
                         {accounts && accounts._id === comment.comment_accountId && (
                             <>
-                                <button onClick={() => handleEditComment(comment._id, comment.comment_text)}>Edit Comment</button>
-                                <button onClick={() => handleDeleteComment(comment._id)}>Delete Comment</button>
+                                <button className="material-symbols-outlined" onClick={() => handleEditComment(comment._id, comment.comment_text)}>Edit Forum</button>
+                                <button className="material-symbols-outlined" onClick={() => handleDeleteComment(comment._id)}>delete forum</button>
+                               
                             </>
                         )}
+                        </div>
                     </div>
                 ))}
             </div>
-
+            
+<div className="comment-add-container">
             <input
                 type="text"
                 value={commentInput}
                 onChange={handleCommentChange}
                 placeholder="Add a comment"
             />
-            <button onClick={handleAddComment}>Add Comment</button>
+            <button className="material-symbols-outlined" onClick={handleAddComment}>add_comment</button>
+            <span class="material-symbols-outlined">add_comment</span>
+            </div>
+           <div> 
+</div>
+            
 
             <p>{formatDistanceToNow(new Date(socialPost.createdAt), { addSuffix: true })}</p>
             <span className="material-symbols-outlined" onClick={handleSocialPostDelete}>delete</span>

@@ -352,3 +352,29 @@ form.signup {
   display: flex;
   flex-direction: column;
 }
+
+
+
+.socialPost-details button {
+  background-color: #1aac83;
+  border-color: white;
+  border-radius: 20px;
+  margin-left: 10px;
+ 
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.comment-add-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction:row;
+}
