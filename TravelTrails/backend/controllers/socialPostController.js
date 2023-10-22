@@ -5,17 +5,24 @@ const fs = require('fs');
 const path = require('path');
 
 //get all socialposts
-const getSocialPosts = async(req,res)=>{
-    const user_id = req.accounts._id
+const getSocialPosts = async (req, res) => {
+    const user_id = req.accounts._id;
     const user = await Account.findById(user_id);
     const userFriends = user.friends;
     userFriends.push(user_id);
-
-    const socialPosts = await SocialPost.find({ user_id: { $in: userFriends } }).sort({ createdAt: -1 });
-
-    res.status(200).json(socialPosts)
-}
-
+  
+    try {
+        const socialPosts = await SocialPost
+        .find({ user_id: { $in: userFriends } })
+        .sort({ createdAt: -1 })
+        .allowDiskUse(true);
+      
+      res.status(200).json(socialPosts);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
 
 //get a single socialpost
 const getSocialPost = async(req,res)=>{

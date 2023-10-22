@@ -25,7 +25,7 @@ export const socialPostsReducer = (state,action) =>{
 
 export const SocialPostsContextProvider = ({children}) => {
     const [state,dispatch] = useReducer(socialPostsReducer,{
-        socialPosts: null
+        socialPosts: []
     })
 
     

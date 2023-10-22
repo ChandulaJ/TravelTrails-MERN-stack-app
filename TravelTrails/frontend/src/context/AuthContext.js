@@ -26,14 +26,6 @@ export const AuthContextProvider = ({ children }) => {
     }
   }, [])
 
-    // Function to update the account
-    const updateAccount = (updatedData) => {
-      // Perform the update logic here
-  
-      // Dispatch an action to update the context state
-      dispatch({ type: 'LOGIN', payload: updatedData });
-    };
-    
   console.log('AuthContext state:', state)
   
   return (
