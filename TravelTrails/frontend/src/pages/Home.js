@@ -5,13 +5,11 @@ import SocialPostForm from "../components/SocialPostForm";
 import SocialPostDetails from "../components/SocialPostDetails";
 import jwt_decode from "jwt-decode";
 
-
 const Home = () => {
   const { socialPosts, dispatch } = useSocialPostsContext();
   const { accounts, userToken } = useAuthContext();
 
   const [accountIds, setAccountIds] = useState([]);
-  const [usernames, setUsernames] = useState([]);
   const [userAccount, setUserAccount] = useState(null);
   const [error, setError] = useState(null);
   const decodedToken = jwt_decode(accounts.token);
@@ -100,9 +98,7 @@ const Home = () => {
         if (response.ok) {
           const accountData = await response.json();
           const ids = accountData.map((account) => account._id);
-          const usernames = accountData.map((account) => account.username);
           setAccountIds(ids);
-          setUsernames(usernames);
         } else {
           throw new Error("Network response for accounts fetch was not ok");
         }
@@ -118,37 +114,6 @@ const Home = () => {
 
   const isFriend = (friendId) => friendIds.includes(friendId);
 
-  useEffect(() => {
-    const fetchSocialPosts = async () => {
-      try {
-
-        const response = await fetch('/api/socialPosts', {
-          headers: {'Authorization': `Bearer ${accounts.token}`},
-        })
-        
-        
-        const json = await response.json();
-
-
-        if (response.ok) {
-         dispatch({type: 'SET_SOCIALPOSTS',payload: json})
-        }else{
-          throw new Error('Network response for socialPost fetch was not ok');
-        }
-
-      
-       
-      } catch (error) {
-        setError(error);
-      }
-    };
-    if(accounts){
-      fetchSocialPosts()
-    }
-    
-  }, [dispatch,accounts])
-  
-
   return (
     <div className="home">
       <div className="home-userData">
@@ -156,8 +121,7 @@ const Home = () => {
         <ul>
           {accountIds.map((id) => (
             <li key={id}>
-              
-              {usernames[accountIds.indexOf(id)]}
+              {id}{" "}
               {isFriend(id) ? (
                 <button onClick={() => removeFriend(id, userId)}>Remove friend</button>
               ) : (
@@ -173,12 +137,12 @@ const Home = () => {
           className="profile-pic"
         />
       </div>
-      
-      <div className="socialPosts">
-      <SocialPostForm />
-        {socialPosts && socialPosts.map((socialPost) => (
-          <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
-        ))}
+      <div className="home-socialPosts">
+        <SocialPostForm />
+        {socialPosts &&
+          socialPosts.map((socialPost) => (
+            <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
+          ))}
       </div>
     </div>
   );

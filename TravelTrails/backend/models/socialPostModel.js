@@ -1,50 +1,50 @@
-    const mongoose = require('mongoose')
-    const Schema  = mongoose.Schema
+const mongoose = require('mongoose')
+const Schema  = mongoose.Schema
 
-    const socialPostSchema = new Schema({
-    
+const socialPostSchema = new Schema({
+ 
 
-        contentText:{
+    contentText:{
+        type:String,
+        required:true
+    },
+
+     photo:{
+        type:String,
+        required:false
+     },
+   
+     user_id:{
             type:String,
             required:true
-        },
-
-        photo:{
+     },
+        username_id:{
             type:String,
             required:false
         },
-    
-        user_id:{
-                type:String,
-                required:true
+        user_address:{
+            type:String,
+            required:false
         },
-            username_id:{
-                type:String,
-                required:false
-            },
-            user_address:{
-                type:String,
-                required:false
-            },
-            photoPath:{
-                type:String,
-                required:false
-            },
-            comments: [
-                {
-                    comment_text: {
-                        type: String,
-                        required: false
-                    },
-                    comment_accountId: {
-                        type: String,
-                        required: false
-                    }
+        photoPath:{
+            type:String,
+            required:false
+        },
+        comments: [
+            {
+                comment_text: {
+                    type: String,
+                    required: false
+                },
+                comment_accountId: {
+                    type: String,
+                    required: false
                 }
-            ]
-        
+            }
+        ]
+    
 
-    },
-    {timestamps:true})
+},
+{timestamps:true})
 
-    module.exports = mongoose.model('socialPost',socialPostSchema)
+module.exports = mongoose.model('socialPost',socialPostSchema)
