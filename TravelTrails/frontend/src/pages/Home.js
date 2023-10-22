@@ -1,104 +1,91 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSocialPostsContext } from "../hooks/useSocialPostsContext";
-import {useAuthContext} from "../hooks/useAuthContext";
-
-//components
-import SocialPostDetails from "../components/SocialPostDetails";
+import { useAuthContext } from "../hooks/useAuthContext";
 import SocialPostForm from "../components/SocialPostForm";
-
-
+import SocialPostDetails from "../components/SocialPostDetails";
+import jwt_decode from "jwt-decode";
 
 const Home = () => {
-  const{socialPosts,dispatch} = useSocialPostsContext()
-  const{accounts} = useAuthContext()
+  const { socialPosts, dispatch } = useSocialPostsContext();
+  const { accounts, userToken} = useAuthContext();
 
-//  const [accounts, setAccounts] = useState([]);
+  const [accountIds, setAccountIds] = useState([]);
   const [error, setError] = useState(null);
+  const decodedToken = jwt_decode(accounts.token);
+  const userId = decodedToken._id;
 
-  useEffect(() => {
-    const fetchSocialPosts = async () => {
-      try {
-
-        const response = await fetch('/api/socialPosts', {
-          headers: {'Authorization': `Bearer ${accounts.token}`},
-        })
-        
-        
-        const json = await response.json();
-
-
+  const addFriend = (friendId,userID) => {
+    fetch(`/api/accounts/${userID}/friends`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}`,
+      },
+      body: JSON.stringify({ friendId, action: 'add' }),
+    })
+      .then((response) => {
         if (response.ok) {
-         dispatch({type: 'SET_SOCIALPOSTS',payload: json})
-        }else{
-          throw new Error('Network response for socialPost fetch was not ok');
+          console.log('Friend added');
         }
+      })
+      .catch((error) => {
+        console.error('Failed to add friend:', error);
+      });
+  };
 
-      
-       
-      } catch (error) {
-        setError(error);
-      }
-    };
-    if(accounts){
-      fetchSocialPosts()
-    }
-    
-  }, [dispatch,accounts])
-  
-/*
   useEffect(() => {
-    const fetchAccounts = async () => {
+    const fetchAccountIds = async () => {
       try {
-        const response = await fetch('/api/accounts',{
-          headers:{
-            'Authorization': `Bearer ${accounts}`,
-          }
+        const response = await fetch("/api/accounts", {
+          headers: {
+            Authorization: `Bearer ${accounts.token}`,
+          },
         });
 
-        if (!response.ok) {
-          throw new Error('Network response for accounts fetch was not ok');
+        if (response.ok) {
+          const accountData = await response.json();
+          const ids = accountData.map((account) => account._id);
+          setAccountIds(ids);
+        } else {
+          throw new Error("Network response for accounts fetch was not ok");
         }
-
-        const json = await response.json();
-        setAccounts(json);
       } catch (error) {
         setError(error);
       }
     };
 
-    fetchAccounts();
-  }, []);
+    if (accounts) {
+      fetchAccountIds();
+    }
+  }, [accounts]);
 
-  if (error) {
-    return <div className="home">Error: {error.message}</div>;
-  }
-*/
   return (
     <div className="home">
-       <div className="home-userData">
-       <h4>{"username"}</h4>
-           <h4>{"address"}</h4>
-            <p>{"other data"}</p>
-            
-          <img
-            src={accounts.profilePic}
-            alt="Profile Picture"
-            className="profile-pic"
-          />
-        
-        </div>
-      <div className="home-socialPosts">
-      <SocialPostForm />
-        {socialPosts && socialPosts.map((socialPost) => (
-          <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
-        ))}
+      <div className="home-userData">
+        <h4>Account IDs:</h4>
+        <ul>
+          {accountIds.map((id) => (
+            <li key={id}>
+              {id}{" "}
+              <button onClick={() => addFriend(id,userId)}>Add friend</button>
+            </li>
+          ))}
+        </ul>
+
+        <img
+          src={accounts.profilePic}
+          alt="Profile Picture"
+          className="profile-pic"
+        />
       </div>
-      
-    
-
-     
+      <div className="home-socialPosts">
+        <SocialPostForm />
+        {socialPosts &&
+          socialPosts.map((socialPost) => (
+            <SocialPostDetails key={socialPost._id} socialPost={socialPost} />
+          ))}
+      </div>
     </div>
-
   );
 };
 
