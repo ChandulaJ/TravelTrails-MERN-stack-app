@@ -38,6 +38,28 @@ const Home = () => {
       });
   };
 
+  const removeFriend = (friendId, userID) => {
+    fetch(`/api/accounts/${userID}/friends`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}`,
+      },
+      body: JSON.stringify({ friendId, action: 'remove' }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Friend removed successfully, update the state
+          setFriendIds(friendIds.filter(id => id !== friendId));
+        } else {
+          console.error('Failed to remove friend:', error);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to remove friend:', error);
+      });
+  };
+
   useEffect(() => {
     const fetchUserAccount = async () => {
       try {
@@ -50,7 +72,7 @@ const Home = () => {
         if (response.ok) {
           const accountData = await response.json();
           setUserAccount(accountData);
-          setFriendIds(accountData.friends); // Initialize friendIds state
+          setFriendIds(accountData.friends);
         } else {
           throw new Error("Network response for user account fetch was not ok");
         }
@@ -101,7 +123,7 @@ const Home = () => {
             <li key={id}>
               {id}{" "}
               {isFriend(id) ? (
-                <button onClick={() => addFriend(id, userId)}>Remove friend</button>
+                <button onClick={() => removeFriend(id, userId)}>Remove friend</button>
               ) : (
                 <button onClick={() => addFriend(id, userId)}>Add friend</button>
               )}

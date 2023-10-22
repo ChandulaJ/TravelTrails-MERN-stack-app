@@ -179,6 +179,42 @@ const loginAccount = async(req,res)=>{
     }
 }
 
+// Remove a friend from the account's friends list
+const removeFriend = async (req, res) => {
+  const { id } = req.params;
+  const { friendId } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(friendId)) {
+    return res.status(404).json({ error: 'Invalid account or friend ID' });
+  }
+
+  try {
+    // Find the account by ID
+    const account = await Account.findById(id);
+
+    if (!account) {
+      return res.status(404).json({ error: 'No such account' });
+    }
+
+    // Check if the friend ID exists in the friends list
+    const friendIndex = account.friends.indexOf(friendId);
+    if (friendIndex === -1) {
+      return res.status(400).json({ error: 'Friend not found in the friends list' });
+    }
+
+    // Remove the friend ID from the friends list
+    account.friends.splice(friendIndex, 1);
+
+    // Save the updated account
+    const updatedAccount = await account.save();
+
+    res.status(200).json(updatedAccount);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 // Add a friend to the account's friends list
 const addFriend = async (req, res) => {
   const { id } = req.params;
@@ -221,6 +257,7 @@ module.exports = {
     deleteAccount,
     updateAccount,
     loginAccount,
-    addFriend
+    addFriend,
+    removeFriend
     
 }

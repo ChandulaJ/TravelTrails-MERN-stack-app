@@ -9,7 +9,8 @@ const {
     deleteAccount,
     updateAccount,
     loginAccount,
-    addFriend
+    addFriend,
+    removeFriend
 } = require('../controllers/accountController')
 
 
@@ -33,6 +34,13 @@ router.delete('/:id',deleteAccount)
 //update a account
 router.put('/:id',updateAccount)
 
-router.put('/:id/friends', addFriend);
-
+router.put('/:id/friends', (req, res) => {
+    if (req.body.action === 'add') {
+      addFriend(req, res);
+    } else if (req.body.action === 'remove') {
+      removeFriend(req, res);
+    } else {
+      res.status(400).json({ error: 'Invalid action' });
+    }
+  });
 module.exports = router
