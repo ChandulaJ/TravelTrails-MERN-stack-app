@@ -7,14 +7,16 @@ import jwt_decode from "jwt-decode";
 
 const Home = () => {
   const { socialPosts, dispatch } = useSocialPostsContext();
-  const { accounts, userToken} = useAuthContext();
+  const { accounts, userToken } = useAuthContext();
 
   const [accountIds, setAccountIds] = useState([]);
+  const [userAccount, setUserAccount] = useState(null);
   const [error, setError] = useState(null);
   const decodedToken = jwt_decode(accounts.token);
   const userId = decodedToken._id;
+  const [friendIds, setFriendIds] = useState([]);
 
-  const addFriend = (friendId,userID) => {
+  const addFriend = (friendId, userID) => {
     fetch(`/api/accounts/${userID}/friends`, {
       method: 'PUT',
       headers: {
@@ -25,13 +27,42 @@ const Home = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('Friend added');
+          // Friend added successfully, update the state
+          setFriendIds([...friendIds, friendId]);
+        } else {
+          console.error('Failed to add friend:', error);
         }
       })
       .catch((error) => {
         console.error('Failed to add friend:', error);
       });
   };
+
+  useEffect(() => {
+    const fetchUserAccount = async () => {
+      try {
+        const response = await fetch(`/api/accounts/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const accountData = await response.json();
+          setUserAccount(accountData);
+          setFriendIds(accountData.friends); // Initialize friendIds state
+        } else {
+          throw new Error("Network response for user account fetch was not ok");
+        }
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    if (accounts) {
+      fetchUserAccount();
+    }
+  }, [accounts, userId]);
 
   useEffect(() => {
     const fetchAccountIds = async () => {
@@ -59,6 +90,8 @@ const Home = () => {
     }
   }, [accounts]);
 
+  const isFriend = (friendId) => friendIds.includes(friendId);
+
   return (
     <div className="home">
       <div className="home-userData">
@@ -67,7 +100,11 @@ const Home = () => {
           {accountIds.map((id) => (
             <li key={id}>
               {id}{" "}
-              <button onClick={() => addFriend(id,userId)}>Add friend</button>
+              {isFriend(id) ? (
+                <button onClick={() => addFriend(id, userId)}>Remove friend</button>
+              ) : (
+                <button onClick={() => addFriend(id, userId)}>Add friend</button>
+              )}
             </li>
           ))}
         </ul>
