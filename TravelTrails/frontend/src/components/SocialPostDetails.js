@@ -209,7 +209,7 @@ const SocialPostDetails = ({ socialPost }) => {
                 placeholder="Add a comment"
             />
             <button className="material-symbols-outlined" onClick={handleAddComment}>add_comment</button>
-            <span className="material-symbols-outlined">add_comment</span>
+            <span class="material-symbols-outlined">add_comment</span>
             </div>
            <div> 
 </div>
