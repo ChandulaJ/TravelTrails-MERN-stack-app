@@ -88,6 +88,7 @@ accountSchema.statics.updateAccount = async function(
     address,
     occupation,
     dateofbirth,
+    friends,
     profilePic,
     profilePicPath
   ) {
@@ -99,6 +100,7 @@ accountSchema.statics.updateAccount = async function(
       address,
       occupation,
       dateofbirth,
+      friends,
       profilePic,
       profilePicPath,
     });

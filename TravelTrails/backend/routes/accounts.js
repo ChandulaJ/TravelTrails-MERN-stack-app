@@ -8,7 +8,8 @@ const {
     getAccounts,
     deleteAccount,
     updateAccount,
-    loginAccount
+    loginAccount,
+    addFriend
 } = require('../controllers/accountController')
 
 
@@ -31,5 +32,7 @@ router.delete('/:id',deleteAccount)
 
 //update a account
 router.put('/:id',updateAccount)
+
+router.put('/:id/friends', addFriend);
 
 module.exports = router

@@ -106,50 +106,61 @@ res.status(200).json(account)
 }
 
 //update a account
+// Update a user account including the friends array
 const updateAccount = async (req, res) => {
-    const { id } = req.params;
-    let {
-      username,
-      email,
-      address,
-      occupation,
-      dateofbirth,
-    } = req.body;
-  
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+  const { id } = req.params;
+  const { username, email, address, occupation, dateofbirth, friends } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such Account' });
+  }
+
+  try {
+    let profilePicPath = '';
+
+    if (req.file) {
+      // If a profilePic file was uploaded, save it and update the profilePicPath
+      const profilePicData = req.file.buffer;
+      const profilePicFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`;
+
+      const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
+      const profilePicPathOr = path.join(frontendPublicPath, profilePicFileName);
+
+      fs.writeFileSync(profilePicPathOr, profilePicData);
+      profilePicPath = profilePicFileName;
+    }
+
+    // Find the account by ID
+    const account = await Account.findById(id);
+
+    if (!account) {
       return res.status(404).json({ error: 'No such Account' });
     }
-  
-    try {
-      let profilePicPath = '';
-  
-      if (req.file) {
-        // If a profilePic file was uploaded, save it and update the profilePicPath
-        const profilePicData = req.file.buffer;
-        const profilePicFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`;
-  
-        const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
-        const profilePicPathOr = path.join(frontendPublicPath, profilePicFileName);
-  
-        fs.writeFileSync(profilePicPathOr, profilePicData);
-        profilePicPath = profilePicFileName;
-      }
-  
-      const account = await Account.updateAccount(
-        id,
-        username,
-        email,
-        address,
-        occupation,
-        dateofbirth,
-        profilePicPath
-      );
-  
-      res.status(200).json(account);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+
+    // Update account properties
+    account.username = username;
+    account.email = email;
+    account.address = address;
+    account.occupation = occupation;
+    account.dateofbirth = dateofbirth;
+
+    // Update profilePicPath if available
+    if (profilePicPath) {
+      account.profilePicPath = profilePicPath;
     }
-  };
+
+    // Update the friends array
+    account.friends = friends;
+
+    // Save the updated account
+    const updatedAccount = await account.save();
+
+    res.status(200).json(updatedAccount);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //login account
 
 const loginAccount = async(req,res)=>{
@@ -168,12 +179,48 @@ const loginAccount = async(req,res)=>{
     }
 }
 
+// Add a friend to the account's friends list
+const addFriend = async (req, res) => {
+  const { id } = req.params;
+  const { friendId } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(friendId)) {
+    return res.status(404).json({ error: 'Invalid account or friend ID' });
+  }
+
+  try {
+    // Find the account by ID
+    const account = await Account.findById(id);
+
+    if (!account) {
+      return res.status(404).json({ error: 'No such account' });
+    }
+
+    // Check if the friend ID is already in the friends list
+    if (account.friends.includes(friendId)) {
+      return res.status(400).json({ error: 'Friend already exists' });
+    }
+
+    // Add the friend ID to the friends list
+    account.friends.push(friendId);
+
+    // Save the updated account
+    const updatedAccount = await account.save();
+
+    res.status(200).json(updatedAccount);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
     signupAccount,
     getAccount,
     getAccounts,
     deleteAccount,
     updateAccount,
-    loginAccount
+    loginAccount,
+    addFriend
     
 }
