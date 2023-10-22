@@ -3,13 +3,15 @@ const Account = require("../models/accountModel")
 
 const requireAuth = async (req, res, next) => {
     //verify authentication
-    const {authorization} = req.headers
-
+    const authorization = req.headers.authorization;
+    //console.log("tokenHeader", authorization);
+    
     if(!authorization){
         return res.status(401).json({error: "Auth token required"})
     }
 
     const token = authorization.split(" ")[1]
+    
 
     try {
         const{_id} = jwt.verify(token, process.env.SECRET)

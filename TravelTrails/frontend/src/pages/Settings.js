@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 
 const Settings = () => {
   const { accounts, dispatch } = useContext(AuthContext);
-  console.log('User data:', accounts);
+  
   const [updatedAccount, setUpdatedAccount] = useState({ ...accounts });
   const [error, setError] = useState(null);
   const [profilePic, setProfilePic] = useState("");

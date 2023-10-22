@@ -4,119 +4,105 @@ const Account = require('../models/accountModel')
 const fs = require('fs');
 const path = require('path');
 
-//get all socialposts
+//check to get posts from only friends
+// get all socialPosts
 const getSocialPosts = async (req, res) => {
-    const user_id = req.accounts._id;
-    const user = await Account.findById(user_id);
-    const userFriends = user.friends;
-    userFriends.push(user_id);
-  
-    try {
-        const socialPosts = await SocialPost
-        .find({ user_id: { $in: userFriends } })
-        .sort({ createdAt: -1 })
-        .allowDiskUse(true);
-      
-      res.status(200).json(socialPosts);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
+  const user_id = req.accounts._id;
+  const user = await Account.findById(user_id);
+  const userFriends = user.friends;
+  userFriends.push(user_id);
 
-//get a single socialpost
-const getSocialPost = async(req,res)=>{
-    const {id} =req.params
-if(!mongoose.Types.ObjectId.isValid(id)){
-    return res.status(404).json({error:'No such socialPost'})
-}
-
-    const socialPost = await SocialPost.findById(id)
-
-
-    if(!socialPost){
-        return res.status(404).json({error:'No such SocialPost'})
-    }
-    res.status(200).json(socialPost);
-}
-
-
-//create a new socialpost
-const createSocialPost = async(req,res)=>{
-    const {contentText,photo} = req.body
-
-   
-
-    if (!contentText) {
-        return res.status(400).json({ error: 'Please provide content text' });
-      }
+  try {
+      const socialPosts = await SocialPost
+      .find({ user_id: { $in: userFriends } })
+      .sort({ createdAt: -1 })
+      .allowDiskUse(true);
     
+    res.status(200).json(socialPosts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-    try {
-          // Decode the Base64-encoded photo and save it as an image
-      const photoData = photo.replace(/^data:image\/\w+;base64,/, '');
-      const photoBuffer = Buffer.from(photoData, 'base64');
-      const photoFileName = `${Date.now()}_${new mongoose.Types.ObjectId()}.png`;
+// get a single socialPost
+const getSocialPost = async (req, res) => {
+  const { id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({error: 'No such socialPost'})
+  }
+
+  const socialPost = await SocialPost.findById(id)
+
+  if (!socialPost) {
+    return res.status(404).json({error: 'No such socialPost'})
+  }
   
-      // Define the path to the frontend/public directory
-const frontendPublicPath = path.join(__dirname, '..', '..', 'frontend', 'public');
-
-// Construct the full path to save the photo
-const photoPathOr = path.join(frontendPublicPath, photoFileName);
-      fs.writeFileSync(photoPathOr, photoBuffer);
-const photoPath = photoFileName;
-        const user_id = req.accounts._id
-        const user = await Account.findById(user_id);
-        const username_id = user.username;
-        const user_address = user.address;
-        
-
-        const socialPost = await SocialPost.create({contentText,photo,user_id,username_id,user_address,photoPath})
-        res.status(200).json(socialPost)
-    } catch (error) {
-        res.status(400).json({error:error.message})
-    }
+  res.status(200).json(socialPost)
 }
 
+//check adding of images
+// create new socialPost
+const createSocialPost = async (req, res) => {
+  const {contentText,photo} = req.body
+  console.log(req.body)
 
-//delete a socialpost
-const deleteSocialPost = async(req,res)=>{
-    const {id} =req.params
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error:'No such SocialPost'})
-    }
-   const socialPost = await SocialPost.findOneAndDelete({_id:id})
+  if (!contentText) {
+    return res.status(400).json({ error: 'Please provide content text' });
+  }
 
-   if(!socialPost){
-    return res.status(400).json({error:'No such SocialPost'})
+
+  // add doc to db
+  try {
+    const user_id = req.accounts._id
+    const socialPost = await SocialPost.create({contentText,photo,user_id})
+    res.status(200).json(socialPost)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({error: error.message})
+  }
 }
-res.status(200).json(socialPost)
 
+// delete a socialPost
+const deleteSocialPost = async (req, res) => {
+  const { id } = req.params
+console.log(id)
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({error: 'No such socialPost'})
+  }
+
+  const socialPost = await SocialPost.findOneAndDelete({_id: id})
+
+  if (!socialPost) {
+    return res.status(400).json({error: 'No such socialPost'})
+  }
+
+  res.status(200).json(socialPost)
 }
-
-
-//update a socialpost // not required
 /*
-const updateSocialPost = async(req,res)=>{
-   const {id} =req.params
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error:'No such SocialPost'})
-    }
-    const socialPost = await SocialPost.findOneAndUpdate({_id:id},{
-        ...req.body
-    })
+// update a socialPost
+const updateSocialPost = async (req, res) => {
+  const { id } = req.params
 
-   if(!socialPost){
-    return res.status(400).json({error:'No such SocialPost'})
-}
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({error: 'No such socialPost'})
+  }
 
+  const socialPost = await SocialPost.findOneAndUpdate({_id: id}, {
+    ...req.body
+  })
+
+  if (!socialPost) {
+    return res.status(400).json({error: 'No such socialPost'})
+  }
+
+  res.status(200).json(socialPost)
 }
 */
 
 module.exports = {
-    createSocialPost,
-    getSocialPost,
-    getSocialPosts,
-    deleteSocialPost
-
+  getSocialPosts,
+  getSocialPost,
+  createSocialPost,
+  deleteSocialPost
 }

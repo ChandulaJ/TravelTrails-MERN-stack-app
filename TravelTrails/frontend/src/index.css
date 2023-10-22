@@ -92,6 +92,7 @@ form button {
   font-weight: 500;
   border-radius: 40px;
   cursor: pointer;
+  margin-top: 10px;
 }
 div.error {
   padding: 10px;
@@ -342,6 +343,8 @@ form.signup {
 .post-photo{
  display: block;
   margin-left: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
   margin-right: auto;
   border-radius: 30px;
   max-width: 100%;
@@ -360,6 +363,7 @@ form.signup {
   border-color: white;
   border-radius: 20px;
   margin-left: 10px;
+
  
 }
 

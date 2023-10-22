@@ -6,15 +6,19 @@ import SocialPostDetails from "../components/SocialPostDetails";
 import jwt_decode from "jwt-decode";
 
 const Home = () => {
-  
+  const [socialPosts, setSocialPosts] = useState([]); // Assuming you have a state variable to store social posts.
+  //const { socialPosts, dispatch } = useSocialPostsContext();
   const { accounts, userToken } = useAuthContext();
-  const [socialPosts, setSocialPosts] = useState([]);
+
   const [accountIds, setAccountIds] = useState([]);
+  const [usernames, setUsernames] = useState([]);
+  const [accountData, setAccountData] = useState([]);
   const [userAccount, setUserAccount] = useState(null);
   const [error, setError] = useState(null);
   const decodedToken = jwt_decode(accounts.token);
   const userId = decodedToken._id;
   const [friendIds, setFriendIds] = useState([]);
+
 
   const addFriend = (friendId, userID) => {
     fetch(`/api/accounts/${userID}/friends`, {
@@ -36,6 +40,7 @@ const Home = () => {
       .catch((error) => {
         console.error('Failed to add friend:', error);
       });
+      window.location.reload();
   };
 
   const removeFriend = (friendId, userID) => {
@@ -58,6 +63,7 @@ const Home = () => {
       .catch((error) => {
         console.error('Failed to remove friend:', error);
       });
+      window.location.reload();
   };
 
   useEffect(() => {
@@ -71,7 +77,6 @@ const Home = () => {
 
         if (response.ok) {
           const accountData = await response.json();
-          setUserAccount(accountData);
           setFriendIds(accountData.friends);
         } else {
           throw new Error("Network response for user account fetch was not ok");
@@ -97,8 +102,11 @@ const Home = () => {
 
         if (response.ok) {
           const accountData = await response.json();
+          setAccountData(accountData); // Assuming you have a state variable to store social posts.
           const ids = accountData.map((account) => account._id);
+          const usernames = accountData.map((account) => account.username);
           setAccountIds(ids);
+          setUsernames(usernames);
         } else {
           throw new Error("Network response for accounts fetch was not ok");
         }
@@ -111,9 +119,9 @@ const Home = () => {
       fetchAccountIds();
     }
   }, [accounts]);
+    
+   
 
-
-  
   useEffect(() => {
     const fetchSocialPosts = async () => {
       try {
@@ -138,32 +146,28 @@ const Home = () => {
   
     fetchSocialPosts();
   }, [accounts]);
-
-
+  
   const isFriend = (friendId) => friendIds.includes(friendId);
-
   return (
     <div className="home">
       <div className="home-userData">
         <h4>Account IDs:</h4>
         <ul>
-          {accountIds.map((id) => (
-            <li key={id}>
-              {id}{" "}
-              {isFriend(id) ? (
-                <button onClick={() => removeFriend(id, userId)}>Remove friend</button>
-              ) : (
-                <button onClick={() => addFriend(id, userId)}>Add friend</button>
-              )}
-            </li>
-          ))}
+          {accountData
+            .filter((account) => account._id !== userId) // Filter out the current user
+            .map((account) => (
+              <li key={account._id}>
+                {account.username}{" "}
+                {isFriend(account._id) ? (
+                  <button onClick={() => removeFriend(account._id, userId)}>Remove friend</button>
+                ) : (
+                  <button onClick={() => addFriend(account._id, userId)}>Add friend</button>
+                )}
+              </li>
+            ))}
         </ul>
-
-        <img
-          src={accounts.profilePic}
-          alt="Profile Picture"
-          className="profile-pic"
-        />
+  
+       
       </div>
       <div className="home-socialPosts">
         <SocialPostForm />
@@ -174,6 +178,7 @@ const Home = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Home;

@@ -37,21 +37,12 @@ const accountSchema = new Schema({
     friends:{
         type:Array,
         required:false
-    },
-    profilePic:{
-        type:String,
-        required:false
-     },
-        profilePicPath:{
-            type:String,
-            required:false
-        }
+    }
 },
 {timestamps:true})
 
 //static signup method
-accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbirth,friends, profilePic,
-    profilePicPath){
+accountSchema.statics.signup= async function(username,password,email,address,occupation,dateofbirth,friends){
     //validation
     if(!username||!password){
         throw Error('Missing username or password')
@@ -73,40 +64,26 @@ accountSchema.statics.signup= async function(username,password,email,address,occ
     const hash = await bcrypt.hash(password,salt)
 
 
-    const account = await this.create({username,password:hash,email,address,occupation,dateofbirth,friends, profilePic,
-        profilePicPath})
+    const account = await this.create({username,password:hash,email,address,occupation,dateofbirth,friends})
     return account
 }
 
-
-
+/*
 //static update account method
-accountSchema.statics.updateAccount = async function(
-    id,
-    username,
-    email,
-    address,
-    occupation,
-    dateofbirth,
-    friends,
-    profilePic,
-    profilePicPath
-  ) {
-    
-  
-    const account = await this.findByIdAndUpdate(id, {
-      username,
-      email,
-      address,
-      occupation,
-      dateofbirth,
-      friends,
-      profilePic,
-      profilePicPath,
-    });
-    return account;
-  };
-  
+accountSchema.statics.updateAccount = async function(username,password,email,address,occupation,dateofbirth){
+    const exists = await this.findOne({username})
+    if(exists){
+        throw Error('Username already exists')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password,salt)
+
+
+    const account = await this.create({username,password:hash,email,address,occupation,dateofbirth})
+    return account
+}
+*/
 //static login method
 
 accountSchema.statics.login = async function(username,password){

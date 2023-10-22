@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Settings from './pages/Settings';
-import Navbar from './components/navbar';
+import Navbar from './components/Navbar';
 
 
 function App() {

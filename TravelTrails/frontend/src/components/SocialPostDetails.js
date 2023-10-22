@@ -8,6 +8,7 @@ import React,{ useState, useEffect } from "react";
 import { formatDistanceToNow } from 'date-fns'
 
 const SocialPostDetails = ({ socialPost }) => {
+    const [socialPosts, setSocialPosts] = useState([]); // Assuming you have a state variable to store social posts.
     const { dispatch: dispatchSocPosts } = useSocialPostsContext();
     const { dispatch: dispatchComments } = useCommentsContext();
     const { accounts } = useAuthContext();
@@ -33,7 +34,7 @@ const SocialPostDetails = ({ socialPost }) => {
     
             if (response.ok) {
                 setComments(data);
-                console.log(data); 
+                
             }
         } catch (error) {
             console.error("Error fetching comments:", error);
@@ -81,6 +82,7 @@ const SocialPostDetails = ({ socialPost }) => {
 
             fetchComments();
         }
+        window.location.reload();
     }
    
     const handleSaveComment = async (commentId) => {
@@ -99,6 +101,7 @@ const SocialPostDetails = ({ socialPost }) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(updatedComment)
+            
         });
 
         const jsonResponse = await response.json();
@@ -111,6 +114,8 @@ const SocialPostDetails = ({ socialPost }) => {
         } else {
             console.error("Error editing comment. Status:", response.status);
         }
+        window.location.reload();
+
     }
     const handleDeleteComment = async (commentId) => {
         if (!accounts) {
@@ -136,23 +141,30 @@ const SocialPostDetails = ({ socialPost }) => {
       };
 
 
-    const handleSocialPostDelete = async () => {
+      const handleSocialPostDelete = async (idval) => {
         if (!accounts) {
-            return;
+          return;
         }
-        const response = await fetch('/api/socialPosts/' + socialPost._id, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${accounts.token}`
-            }
-        })
-        const json = await response.json();
-
+      
+        const response = await fetch('/api/socialPosts/' + idval, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${accounts.token}`
+          }
+        });
+      
         if (response.ok) {
-            dispatchSocPosts({ type: 'DELETE_SOCIALPOST', payload: json })
+            window.location.reload();
+          // The delete request was successful (status 200)
+          // You can update your state to remove the deleted post from the list
+          setSocialPosts((prevSocialPosts) => prevSocialPosts.filter(post => post._id !== idval));
+        } else {
+          // Handle error here if needed
+          // For example, show an error message to the user
+          console.log('Failed to delete social post');
         }
-    }
-   
+      };
+      
     console.log("Comments in socialPost:", socialPost.comments);
 
  
@@ -161,7 +173,7 @@ const SocialPostDetails = ({ socialPost }) => {
             <h4>{socialPost.username_id}</h4>
             <h4>{socialPost.user_address}</h4>
             <p>{socialPost.contentText}</p>
-            <img className="post-photo" src={socialPost.photoPath} alt="Post Photo" />
+            <img className="post-photo" src={socialPost.photo} alt="Post Photo" />
 
             <div className="comment-section">
                 <strong>Comments:</strong>
@@ -216,8 +228,9 @@ const SocialPostDetails = ({ socialPost }) => {
             
 
             <p>{formatDistanceToNow(new Date(socialPost.createdAt), { addSuffix: true })}</p>
-            <span className="material-symbols-outlined" onClick={handleSocialPostDelete}>delete</span>
-        </div>
+            <span className="material-symbols-outlined" onClick={() => handleSocialPostDelete(socialPost._id)}>delete</span>
+
+             </div>
     );
 }
 

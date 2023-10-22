@@ -8,22 +8,16 @@ const Signup = () => {
   const [address,setAddress] = useState('')
   const [occupation,setOccupation] = useState('')
   const [dateofbirth,setDateofbirth] = useState('')
-const[profilePic,setProfilePic]=useState("default-profile-pic.png")
+
 
   const {signup,error,isLoading} = useSignup()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await signup(username, password,email,address,occupation,dateofbirth,profilePic)
-    console.log(username, password,email,address,occupation,dateofbirth,profilePic)
-  };
-
-  const handleProfilePicChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setProfilePic(selectedFile);
-  };
-  
+    await signup(username, password,email,address,occupation,dateofbirth)
+    console.log(username, password,email,address,occupation,dateofbirth)
+  }
 
   return (
     <div className="signup-container">
@@ -80,12 +74,7 @@ const[profilePic,setProfilePic]=useState("default-profile-pic.png")
             placeholder="Date of Birth"
             className="signup-input"
         />
-          <input
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          onChange={handleProfilePicChange}
-          required
-        />
+        
 
       <button disabled={isLoading}>Sign Up</button>
       {error && <div className="error">{error}</div>}

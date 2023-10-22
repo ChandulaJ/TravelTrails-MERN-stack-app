@@ -8,14 +8,19 @@ const accountRoutes = require('./routes/accounts')
 const commentsRoutes = require('./routes/comments')
 const path = require('path');
 const bodyParser = require('body-parser'); 
+const cors = require('cors')
 
 
-
-//middleware
-
+// middleware
 app.use(bodyParser.json({ limit: '10mb' })); 
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); 
-
+app.use(cors(
+    {
+        origin: 'http://localhost:3000',
+        credentials: true
+    
+    }
+))
 
 app.use(express.json())
 
@@ -26,8 +31,7 @@ app.use((req,res,next)=>{
 
 
 
-//routes
-
+// routes
 app.use('/api/socialPosts',socialPostRoutes)
 app.use('/api/accounts',accountRoutes)
 app.use('/api/socialPosts',commentsRoutes)

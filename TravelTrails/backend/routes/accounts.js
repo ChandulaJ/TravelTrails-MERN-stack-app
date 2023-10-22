@@ -1,7 +1,6 @@
-//account = user
-
 const express = require('express')
 
+// controller functions
 const {
     signupAccount,
     getAccount,
@@ -12,7 +11,9 @@ const {
     addFriend,
     removeFriend
 } = require('../controllers/accountController')
+
 const router = express.Router()
+
 
 //get single account
 router.get('/:id',getAccount)
@@ -30,9 +31,8 @@ router.post('/login',loginAccount)
 //delete a account
 router.delete('/:id',deleteAccount)
 
-
 //update a account
-router.put('/:id',updateAccount)
+//router.put('/:id',updateAccount)
 
 router.put('/:id/friends', (req, res) => {
     if (req.body.action === 'add') {
@@ -44,3 +44,4 @@ router.put('/:id/friends', (req, res) => {
     }
   });
 module.exports = router
+

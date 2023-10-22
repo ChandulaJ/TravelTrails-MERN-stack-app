@@ -1,31 +1,22 @@
 import React,{useState} from 'react'
+import ConvertToBase64 from './convertTo64base'
 import {useSocialPostsContext} from '../hooks/useSocialPostsContext'
-
+import axios from 'axios'
 import {useAuthContext} from '../hooks/useAuthContext'
 import { set } from 'date-fns'
 
 const SocialPostForm =()=>{
-    const{dispatch} = useSocialPostsContext()
+    
     const{accounts}=useAuthContext()
-    const[contentText,setContentText]=useState('')
-    const [base64Photo, setBase64Photo] = useState('');
-    const[photo,setPhotos]=useState(null)
     const[error,setError]=useState(null)
-    const [emptyFields,setEmptyFields]=useState([])
 
-    const handleFileChange = (e) => {
-        const selectedPhoto = e.target.files[0];
-        if (selectedPhoto) {
-          const reader = new FileReader();
-      
-          reader.onload = (event) => {
-            const base64Photo = event.target.result;
-            setBase64Photo(base64Photo);
-          };
-      
-          reader.readAsDataURL(selectedPhoto);
-        }
-      };
+     
+
+      const [socialPost, setSocialPost] = useState({
+        contentText: '',
+        photo: '',
+        username_id:''
+      });
       
     const handleSubmit = async(e)=>{
         e.preventDefault()
@@ -34,39 +25,51 @@ const SocialPostForm =()=>{
             setError('You must be logged in')
             return
         }
-        //const socialPost = {contentText,photo}
-
-        const socialPost = {
+        if(!socialPost.contentText){
+            setError('Please enter a post')
+            return
+        }
+        if(!socialPost.photo){
+            setError('Please enter a photo')
+            return
+        }
+        const token = accounts.token;
+        const usernameId = accounts.username;
+        const authorization = `Bearer ${token}`;
+        const { contentText,photo } = socialPost;
+        try {
+          const newPost = await axios.post('http://localhost:4000/api/socialPosts', {
             contentText,
-            photo: base64Photo, 
-            
-          };
-
-        const response = await fetch('/api/socialPosts',{
-            method:'POST',
-            body:JSON.stringify(socialPost),
+            photo,
+            usernameId
+          },{
             headers:{
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accounts.token}`
+              authorization
             }
-        })
-        const json = await response.json()
-
-        if(!response.ok){
-            setError(json.error)
-            setEmptyFields(json.emptyFields)
+          });
+          
+          setSocialPost({
+            contentText: '',
+            photo: ''
+          });
+          window.location.reload();
+          
+        } catch (e) {
+          console.log(e.response.data.message);
+     
         }
-
-        if(response.ok){
-            setContentText('')
-            setPhotos('')
-            setError(null)
-            setEmptyFields([])  
-            console.log('socialPost added',json)
-            dispatch({type:'CREATE_SOCIALPOST',payload:json})
-
-        }
+      
     }
+
+    const handleFileUpload = async (e) => {
+      const file = e.target.files[0];
+      const base64 = await ConvertToBase64(file);
+      setSocialPost({ ...socialPost, photo: base64 });
+    };
+
+    const handleInput = (e) => {
+     setSocialPost({ ...socialPost, [e.target.name]: e.target.value });
+    };
 
     return(
         <form className='create-SocialPost' onSubmit = {handleSubmit}>
@@ -76,24 +79,25 @@ const SocialPostForm =()=>{
 <label>Post contentText</label>
             <input
             type='text'
-            onChange={(e)=>setContentText(e.target.value)}
-            value ={contentText}
+            name='contentText'
+            onChange={handleInput}
+            
            
             />
 <label>Post photo</label>
-<input
-  type="file"
-  accept=".jpg, .jpeg, .png" // Limit accepted file types
-  onChange={handleFileChange}
-  required
+          <input
+            type="file"
+            name='photo'
+            accept=".jpg, .jpeg, .png" // Limit accepted file types
+            placeholder='Post photo'
+            onChange={(e) => handleFileUpload(e)}
+            
 />
-
-{base64Photo && base64Photo.length > 10 * 1024 * 1024 && (
-  <div className="error">File size exceeds 10MB.</div>
-)}
+<img className="post-photo" src={socialPost.photo}  />
 
 
-<button>Add post</button>
+<button  onClick={handleSubmit}>Add post</button>
+          
 
 {error && <div className="error">{error}</div>}
             </form>
