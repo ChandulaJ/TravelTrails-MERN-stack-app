@@ -1,7 +1,7 @@
 //account = user
 
 const express = require('express')
-const router = express.Router()
+
 const {
     signupAccount,
     getAccount,
@@ -12,7 +12,7 @@ const {
     addFriend,
     removeFriend
 } = require('../controllers/accountController')
-
+const router = express.Router()
 
 //get single account
 router.get('/:id',getAccount)

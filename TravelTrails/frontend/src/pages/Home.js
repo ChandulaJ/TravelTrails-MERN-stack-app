@@ -6,9 +6,9 @@ import SocialPostDetails from "../components/SocialPostDetails";
 import jwt_decode from "jwt-decode";
 
 const Home = () => {
-  const { socialPosts, dispatch } = useSocialPostsContext();
+  
   const { accounts, userToken } = useAuthContext();
-
+  const [socialPosts, setSocialPosts] = useState([]);
   const [accountIds, setAccountIds] = useState([]);
   const [userAccount, setUserAccount] = useState(null);
   const [error, setError] = useState(null);
@@ -111,6 +111,34 @@ const Home = () => {
       fetchAccountIds();
     }
   }, [accounts]);
+
+
+  
+  useEffect(() => {
+    const fetchSocialPosts = async () => {
+      try {
+        if (accounts && accounts.token) {
+          const response = await fetch("/api/socialPosts", {
+            headers: {
+              Authorization: `Bearer ${accounts.token}`,
+            },
+          });
+  
+          if (response.ok) {
+            const socialPostData = await response.json();
+            setSocialPosts(socialPostData); // Assuming you have a state variable to store social posts.
+          } else {
+            throw new Error("Network response for social posts fetch was not ok");
+          }
+        }
+      } catch (error) {
+        setError(error);
+      }
+    };
+  
+    fetchSocialPosts();
+  }, [accounts]);
+
 
   const isFriend = (friendId) => friendIds.includes(friendId);
 
