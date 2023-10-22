@@ -1,35 +1,38 @@
-//account = user
-
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const {
-    signupAccount,
-    getAccount,
-    getAccounts,
-    deleteAccount,
-    updateAccount,
-    loginAccount
-} = require('../controllers/accountController')
+  signupAccount,
+  getAccount,
+  getAccounts,
+  deleteAccount,
+  updateAccount,
+  loginAccount,
+  addFriend, // New route to add a friend
+  removeFriend, // New route to remove a friend
+} = require("../controllers/accountController");
 
+// Get a single account
+router.get("/:id", getAccount);
 
-//get single account
-router.get('/:id',getAccount)
+// Get all the accounts
+router.get("/", getAccounts);
 
-//get all the accounts
-router.get('/',getAccounts)
+// Create a new account
+router.post("/signup", signupAccount);
 
+// Login to an existing account
+router.post("/login", loginAccount);
 
-//create a new account
-router.post('/signup',signupAccount)
+// Delete an account
+router.delete("/:id", deleteAccount);
 
-//login to a existing account
-router.post('/login',loginAccount)
+// Update an account
+router.put("/:id", updateAccount);
 
-//delete a account
-router.delete('/:id',deleteAccount)
+// Add a friend to the current user
+router.put("/add-friend/:accountId", addFriend);
 
+// Remove a friend from the current user
+router.put("/remove-friend/:accountId", removeFriend);
 
-//update a account
-router.put('/:id',updateAccount)
-
-module.exports = router
+module.exports = router;

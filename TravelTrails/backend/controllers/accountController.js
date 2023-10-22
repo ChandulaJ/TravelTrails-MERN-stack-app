@@ -36,7 +36,8 @@ const signupAccount = async (req, res) => {
   
       if (req.file) {
         
-        const profilePicFileName = `${account._id}_${Date.now()}.png`; // Include account ID in the filename
+        const username = req.body.username; // Use the username from the request
+        const profilePicFileName = `${username}_${Date.now()}.png`;
   
         // Rest of the code to save the profile picture remains the same
         const profilePicData = req.file.buffer;
@@ -168,12 +169,76 @@ const loginAccount = async(req,res)=>{
     }
 }
 
+// Add a friend to the current user
+const addFriend = async (req, res) => {
+  const { accountId } = req.params; // Friend's account ID to add as a friend
+  const token = req.headers.authorization;
+
+  if (!mongoose.Types.ObjectId.isValid(accountId)) {
+    return res.status(400).json({ error: 'Invalid account ID' });
+  }
+
+  try {
+    // Verify and decode the token to get the user ID
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    const user_id = decodedToken._id;
+
+    // Check if the friend is already in the user's friends list
+    const user = await Account.findById(user_id);
+    if (user.friends.includes(accountId)) {
+      return res.status(400).json({ error: 'This account is already a friend.' });
+    }
+
+    // Add the friend to the user's friends list
+    user.friends.push(accountId);
+    await user.save();
+
+    res.status(200).json({ message: 'Friend added successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Remove a friend from the current user
+const removeFriend = async (req, res) => {
+  const { accountId } = req.params; // Friend's account ID to remove from friends list
+  const token = req.headers.authorization;
+
+  if (!mongoose.Types.ObjectId.isValid(accountId)) {
+    return res.status(400).json({ error: 'Invalid account ID' });
+  }
+
+  try {
+    // Verify and decode the token to get the user ID
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    const user_id = decodedToken._id;
+
+    // Check if the friend is in the user's friends list
+    const user = await Account.findById(user_id);
+    if (!user.friends.includes(accountId)) {
+      return res.status(400).json({ error: 'This account is not a friend.' });
+    }
+
+    // Remove the friend from the user's friends list
+    user.friends = user.friends.filter((friendId) => friendId.toString() !== accountId);
+    await user.save();
+
+    res.status(200).json({ message: 'Friend removed successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+
 module.exports = {
     signupAccount,
     getAccount,
     getAccounts,
     deleteAccount,
     updateAccount,
-    loginAccount
+    loginAccount,
+    removeFriend,
+    addFriend
     
 }
