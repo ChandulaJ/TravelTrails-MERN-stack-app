@@ -12,11 +12,8 @@ export const useSignup = () => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      // Read the selected file as a data URL
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        
+    
+     //upload profile pic,(not implemented)
         try {
           const response = await fetch('/api/accounts/signup', {
             method: 'POST',
@@ -49,14 +46,6 @@ export const useSignup = () => {
           setIsLoading(false);
         }
       };
-
-      // Read the profilePic file as a data URL
-      
-    } catch (error) {
-      setError(`Error reading profile picture: ${error.message}`);
-      setIsLoading(false);
-    }
-  };
 
   return { signup, isLoading, error };
 };
