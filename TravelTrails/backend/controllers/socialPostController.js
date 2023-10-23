@@ -7,6 +7,7 @@ const path = require('path');
 //check to get posts from only friends
 // get all socialPosts
 const getSocialPosts = async (req, res) => {
+  console.log("starting to fetch socialPosts")
   const user_id = req.accounts._id;
   const user = await Account.findById(user_id);
   const userFriends = user.friends;
@@ -22,6 +23,7 @@ const getSocialPosts = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+  console.log("socialposts fetching done")
 };
 
 // get a single socialPost
