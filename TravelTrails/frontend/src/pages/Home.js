@@ -159,9 +159,12 @@ const Home = () => {
               <li key={account._id}>
                 {account.username}{" "}
                 {isFriend(account._id) ? (
-                  <button onClick={() => removeFriend(account._id, userId)}>Remove friend</button>
+                  
+                  <button className="material-symbols-outlined" onClick={() => removeFriend(account._id, userId)}>person_add</button>
+                              
                 ) : (
-                  <button onClick={() => addFriend(account._id, userId)}>Add friend</button>
+                
+                  <button className="material-symbols-outlined" onClick={() => addFriend(account._id, userId)}>person_remove</button>
                 )}
               </li>
             ))}

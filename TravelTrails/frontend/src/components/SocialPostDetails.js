@@ -4,8 +4,10 @@ import { useCommentsContext } from "../context/CommentContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import React,{ useState, useEffect } from "react"; 
 
+
 // date fns
 import { formatDistanceToNow } from 'date-fns'
+
 
 const SocialPostDetails = ({ socialPost }) => {
     const [socialPosts, setSocialPosts] = useState([]); // Assuming you have a state variable to store social posts.
@@ -17,6 +19,13 @@ const SocialPostDetails = ({ socialPost }) => {
     const [comments, setComments] = useState([]); 
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedCommentText, setEditedCommentText] = useState("");
+    const [user,setUser] = useState({
+        username:"",
+        email:"",
+        address:"",
+        occupation:"",
+        dateofbirth:""
+    });
 
     useEffect(() => {
         fetchComments(); 
@@ -166,12 +175,25 @@ const SocialPostDetails = ({ socialPost }) => {
       };
       
     console.log("Comments in socialPost:", socialPost.comments);
+    
+    
+    useEffect(()=>{
+        const fetchUser = async () => {
+try {
+    const response = await fetch(`/api/accounts/${socialPost.user_id}`);
+    const user = await response.json();
+    setUser(user);
+    console.log("user", user);
+} catch (error) {
+    console.error("Error fetching user:", error);
+}            
+        }
 
- 
+        fetchUser();
+    },[])
     return (
         <div className="socialPost-details">
-            <h4>{socialPost.username_id}</h4>
-            <h4>{socialPost.user_address}</h4>
+            <h4>{user.username}</h4>
             <p>{socialPost.contentText}</p>
             <img className="post-photo" src={socialPost.photo} alt="Post Photo" />
 

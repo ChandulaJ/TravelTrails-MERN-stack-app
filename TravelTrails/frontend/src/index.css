@@ -38,6 +38,7 @@ header a {
   grid-template-columns: 1fr 1.5fr;
   gap: 20px;
 }
+
 .socialPost-details {
   background: #fff;
   border-radius: 4px;
@@ -332,6 +333,10 @@ form.signup {
   margin-top: 20px;
 }
 
+.home li{
+  margin: 15px;
+}
+
 .create-SocialPost{
   background-color:#a9e1f4;
   border-radius: 30px;
@@ -369,11 +374,9 @@ form.signup {
 
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+ background-color: rgb(248, 249, 242);
+  border-radius: 50%;
+  margin-left: 10px;
 }
 
 .comment-add-container {
