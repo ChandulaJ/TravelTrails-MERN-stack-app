@@ -147,6 +147,7 @@ const SocialPostDetails = ({ socialPost }) => {
         } else {
           console.error("Error deleting comment. Status:", response.status);
         }
+        window.location.reload();
       };
 
 
@@ -213,14 +214,18 @@ try {
                                     value={editedCommentText} // Use the edited comment text
                                     onChange={(e) => setEditedCommentText(e.target.value)} // Update edited comment text
                                 />
-                                <button onClick={() => handleSaveComment(comment._id)}>
+                                <button className="material-symbols-outlined" onClick={() => handleSaveComment(comment._id)}>
                                     Save
                                 </button>
                             </>
                         ) : (
                             <>
-                                <p>{comment.comment_text}</p>
+
+      
+
+                                   <p>{comment.comment_text}</p>
                                 <p>{comment.comment_accountId}</p>
+                                
                             </>
                         )}
                         {accounts && accounts._id === comment.comment_accountId && (

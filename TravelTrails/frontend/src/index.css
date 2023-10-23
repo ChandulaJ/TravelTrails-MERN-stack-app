@@ -331,6 +331,7 @@ form.signup {
   border-radius: 30px;
   padding: 20px;
   margin-top: 20px;
+  height:fit-content;
 }
 
 .home li{
@@ -363,12 +364,13 @@ form.signup {
 
 
 
-.socialPost-details button {
-  background-color: #1aac83;
-  border-color: white;
-  border-radius: 20px;
-  margin-left: 10px;
 
+.socialPost-details button {
+  background-color: #7e5feb;
+  border-radius: 50px;
+  margin-right: 10px;
+  margin-left: 10px;
+padding:5px;
  
 }
 
