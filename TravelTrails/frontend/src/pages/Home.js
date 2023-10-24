@@ -160,11 +160,11 @@ const Home = () => {
                 {account.username}{" "}
                 {isFriend(account._id) ? (
                   
-                  <button className="material-symbols-outlined" onClick={() => removeFriend(account._id, userId)}>person_add</button>
+                  <button className="material-symbols-outlined" onClick={() => removeFriend(account._id, userId)}>person_remove</button>
                               
                 ) : (
                 
-                  <button className="material-symbols-outlined" onClick={() => addFriend(account._id, userId)}>person_remove</button>
+                  <button className="material-symbols-outlined" onClick={() => addFriend(account._id, userId)}>person_add</button>
                 )}
               </li>
             ))}

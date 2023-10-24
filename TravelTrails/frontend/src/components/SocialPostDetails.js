@@ -239,19 +239,21 @@ try {
                             <>
 
       
-                                <p className="boldText">{comment.comment_accountId} commented: </p>
+<p className="boldText">
+  {comment.comment_accountId === accounts.username ? "You" : comment.comment_accountId} commented:
+</p>
                                    <p>{comment.comment_text}</p>
                                 
                                 
                             </>
                         )}
-                      
+                      {comment.comment_accountId === accounts.username && (
                             <>
                                 <button className="material-symbols-outlined" onClick={() => handleEditComment(comment._id, comment.comment_text)}>Edit Forum</button>
                                 <button className="material-symbols-outlined" onClick={() => handleDeleteComment(comment._id)}>delete forum</button>
                                
                             </>
-                        
+                      )}
                         </div>
                     </div>
                 ))}
