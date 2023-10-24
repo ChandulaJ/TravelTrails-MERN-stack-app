@@ -73,18 +73,21 @@ const SocialPostForm =()=>{
 
     return(
         <form className='create-SocialPost' onSubmit = {handleSubmit}>
-            <h3>Add a new post</h3>
+          
           
 
-<label>Post contentText</label>
+
+
             <input
+            className='input'
             type='text'
             name='contentText'
+            placeholder='Any travel thoughts...'
             onChange={handleInput}
             
            
             />
-<label>Post photo</label>
+
           <input
             type="file"
             name='photo'
