@@ -13,7 +13,8 @@ const SocialPostDetails = ({ socialPost }) => {
     const [socialPosts, setSocialPosts] = useState([]); // Assuming you have a state variable to store social posts.
     const { dispatch: dispatchSocPosts } = useSocialPostsContext();
     const { dispatch: dispatchComments } = useCommentsContext();
-    const { accounts } = useAuthContext();
+    const{accounts}=useAuthContext();
+    const [currentUser, setCurrentUser] = useState(null);
 
     const [commentInput, setCommentInput] = useState("");
     const [comments, setComments] = useState([]); 
@@ -26,6 +27,20 @@ const SocialPostDetails = ({ socialPost }) => {
         occupation:"",
         dateofbirth:""
     });
+
+
+
+
+    useEffect(() => {
+        // Check if there are accounts and update the state
+        if (accounts) {
+          setCurrentUser(accounts.username);
+        } else {
+          setCurrentUser(null);
+        }
+        console.log("current acc in useeffect", accounts);
+      }, []);
+    
 
     useEffect(() => {
         fetchComments(); 
@@ -64,11 +79,13 @@ const SocialPostDetails = ({ socialPost }) => {
         if (!accounts) {
             return;
         }
-
+        
+        console.log("accounts", currentUser)
         // Create a new comment object with the comment text and account ID.
         const newComment = {
             comment_text: commentInput,
-            comment_accountId:accounts._id
+            comment_accountId:currentUser
+           
         };
 
         // Send a request to add the comment to the server.
@@ -148,7 +165,7 @@ const SocialPostDetails = ({ socialPost }) => {
           console.error("Error deleting comment. Status:", response.status);
         }
         window.location.reload();
-      };
+      }
 
 
       const handleSocialPostDelete = async (idval) => {
@@ -222,19 +239,19 @@ try {
                             <>
 
       
-
+                                <p className="boldText">{comment.comment_accountId} commented: </p>
                                    <p>{comment.comment_text}</p>
-                                <p>{comment.comment_accountId}</p>
+                                
                                 
                             </>
                         )}
-                        {accounts && accounts._id === comment.comment_accountId && (
+                      
                             <>
                                 <button className="material-symbols-outlined" onClick={() => handleEditComment(comment._id, comment.comment_text)}>Edit Forum</button>
                                 <button className="material-symbols-outlined" onClick={() => handleDeleteComment(comment._id)}>delete forum</button>
                                
                             </>
-                        )}
+                        
                         </div>
                     </div>
                 ))}

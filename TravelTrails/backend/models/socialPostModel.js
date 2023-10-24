@@ -34,7 +34,7 @@ const socialPostSchema = new Schema({
                 required: false
             },
             comment_accountId: {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'accountModel',
                 required: false
             }

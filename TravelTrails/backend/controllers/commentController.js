@@ -18,6 +18,7 @@ const createComment = async (req, res) => {
         socialPost.comments.push({
             comment_text,
             comment_accountId
+           
         });
 
         // Save the updated social post with the new comment
