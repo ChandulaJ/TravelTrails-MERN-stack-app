@@ -96,7 +96,7 @@ const SocialPostForm =()=>{
 <img className="post-photo" src={socialPost.photo}  />
 
 
-<button  onClick={handleSubmit}>Add post</button>
+<button className='btn' onClick={handleSubmit}>Add post</button>
           
 
 {error && <div className="error">{error}</div>}

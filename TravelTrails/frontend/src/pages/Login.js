@@ -39,7 +39,7 @@ const Login = () => {
         className="login-input"
       />
       <div className="center-button">
-      <button disabled={isLoading}>LOGIN</button>
+      <button class="login-btn" disabled={isLoading}>LOGIN</button>
       </div>
 
       <div className="separator">
@@ -51,6 +51,7 @@ const Login = () => {
 
       <div className="center-button">
       <Link to="/signup">
+        
           <button className="signup-btn" disabled={isLoading}>SIGNUP</button>
         </Link>
       </div>
