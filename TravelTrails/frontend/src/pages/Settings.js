@@ -72,7 +72,7 @@ const Settings = () => {
     <img className="settings-img" src="settingsPg.jpg" alt="MountainsImg"></img>
       <img
         className="profile-img"
-        src={profilePic || "default-profile-pic.png"}
+        src={profilePic || "default-pic.png"}
         alt="Profile Pic"
       ></img>
       <input
