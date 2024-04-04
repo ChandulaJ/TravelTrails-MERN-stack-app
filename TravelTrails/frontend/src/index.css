@@ -269,7 +269,7 @@ form.login {
 .signup-container {
   display: flex;
   border-radius: 50px;
-  background-image:url("F:\GithubRepos\TravelTrails-MERN-stack-app\TravelTrails\frontend\public\signupBackdrop.png"); 
+  background-image:url("D:/Git collaborate/TravelTrails-MERN-stack-app/TravelTrails/frontend/public/signupBackdrop.png"); 
   background-size: cover; 
   background-position: center center; 
   background-repeat: no-repeat; 
