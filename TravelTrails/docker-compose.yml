@@ -1,0 +1,36 @@
+version: "2.27.0"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URI=mongodb://127.0.0.1:27017/travelTrails
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - mongo
+    command: ["npm", "start"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "start"]
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
