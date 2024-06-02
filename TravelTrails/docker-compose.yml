@@ -19,9 +19,11 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - BACKEND_IP=${BACKEND_IP:-$(curl -s ifconfig.me)} 
     depends_on:
       - backend
     networks:
