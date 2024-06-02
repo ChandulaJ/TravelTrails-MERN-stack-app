@@ -15,7 +15,7 @@ app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(
   cors({
-    origin:`http://3.88.10.51:3000`,
+    origin: `http://${process.env.BACKEND_IP}:3000`,
     credentials: true,
   })
 );

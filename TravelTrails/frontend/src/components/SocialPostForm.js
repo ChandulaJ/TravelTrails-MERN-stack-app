@@ -36,7 +36,7 @@ const SocialPostForm = () => {
     const { contentText, photo } = socialPost;
     try {
       const newPost = await axios.post(
-        `http://3.88.10.51:4000/api/socialPosts`,
+        `http://${process.env.BACKEND_IP}:4000/api/socialPosts`,
         {
           contentText,
           photo,
