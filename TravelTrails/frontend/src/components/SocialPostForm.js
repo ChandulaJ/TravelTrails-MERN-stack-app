@@ -36,7 +36,7 @@ const SocialPostForm = () => {
     const { contentText, photo } = socialPost;
 
     try {
-      const response = await fetch(`http://${process.env.BACKEND_IP}:4000/api/socialPosts`, {
+      const response = await fetch(`/api/socialPosts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
