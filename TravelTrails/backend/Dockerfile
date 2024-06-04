@@ -15,12 +15,11 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Copy the IP fetching script and ensure it's executable
-COPY get_ip.sh /app/get_ip.sh
-RUN chmod +x /app/get_ip.sh
 
 # Expose the necessary port
 EXPOSE 4000
 
 # Define the command to run the application
-CMD ["sh", "-c", "/app/get_ip.sh > /shared-data/backend_ip.txt && npm start"]
+CMD ["npm", "start"]
+
+
