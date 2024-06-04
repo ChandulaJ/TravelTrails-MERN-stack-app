@@ -1,106 +1,49 @@
-import React, { useState } from "react";
-import ConvertToBase64 from "./convertTo64base";
-import { useSocialPostsContext } from "../hooks/useSocialPostsContext";
-import axios from "axios";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { set } from "date-fns";
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-const SocialPostForm = () => {
-  const { accounts } = useAuthContext();
-  const [error, setError] = useState(null);
+  if (!accounts) {
+    setError("You must be logged in");
+    return;
+  }
+  if (!socialPost.contentText) {
+    setError("Please enter a post");
+    return;
+  }
+  if (!socialPost.photo) {
+    setError("Please enter a photo");
+    return;
+  }
+  const token = accounts.token;
+  const usernameId = accounts.username;
+  const authorization = `Bearer ${token}`;
+  const { contentText, photo } = socialPost;
 
-  const [socialPost, setSocialPost] = useState({
-    contentText: "",
-    photo: "",
-    username_id: "",
-  });
+  try {
+    const response = await fetch(`/api/socialPosts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+      body: JSON.stringify({
+        contentText,
+        photo,
+        usernameId,
+      }),
+    });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!accounts) {
-      setError("You must be logged in");
-      return;
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
     }
-    if (!socialPost.contentText) {
-      setError("Please enter a post");
-      return;
-    }
-    if (!socialPost.photo) {
-      setError("Please enter a photo");
-      return;
-    }
-    const token = accounts.token;
-    const usernameId = accounts.username;
-    const authorization = `Bearer ${token}`;
-    const { contentText, photo } = socialPost;
 
-    try {
-      const response = await fetch(`/api/socialPosts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authorization,
-        },
-        body: JSON.stringify({
-          contentText,
-          photo,
-          usernameId,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message);
-      }
-
-      setSocialPost({
-        contentText: "",
-        photo: "",
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error("Error:", error.message);
-      setError(error.message);
-    }
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await ConvertToBase64(file);
-    setSocialPost({ ...socialPost, photo: base64 });
-  };
-
-  const handleInput = (e) => {
-    setSocialPost({ ...socialPost, [e.target.name]: e.target.value });
-  };
-
-  return (
-    <form className="create-SocialPost" onSubmit={handleSubmit}>
-      <input
-        className="input"
-        type="text"
-        name="contentText"
-        placeholder="Any travel thoughts..."
-        onChange={handleInput}
-      />
-
-      <input
-        type="file"
-        name="photo"
-        accept=".jpg, .jpeg, .png" // Limit accepted file types
-        placeholder="Post photo"
-        onChange={(e) => handleFileUpload(e)}
-      />
-      <img className="post-photo" src={socialPost.photo} />
-
-      <button className="btn" onClick={handleSubmit}>
-        Add post
-      </button>
-
-      {error && <div className="error">{error}</div>}
-    </form>
-  );
+    setSocialPost({
+      contentText: "",
+      photo: "",
+    });
+    window.location.reload();
+  } catch (error) {
+    console.error("Error:", error.message);
+    setError(error.message);
+  }
 };
-
-export default SocialPostForm;
