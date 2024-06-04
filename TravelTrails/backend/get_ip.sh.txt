@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Get the IP address of the device
+
+# Use the `hostname` command to get the IP address
+ip_address=$(hostname -I | awk '{print $1}')
+
+# Check if the IP address was retrieved
+if [ -z "$ip_address" ]; then
+    echo "Unable to retrieve IP address. Attempting alternative method..."
+
+    # Alternative method using `ip` command
+    ip_address=$(ip addr show | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1 | head -n 1)
+
+    # Check if the IP address was retrieved
+    if [ -z "$ip_address" ]; then
+        echo "Unable to retrieve IP address using alternative method."
+        exit 1
+    fi
+fi
+
+echo "$ip_address"

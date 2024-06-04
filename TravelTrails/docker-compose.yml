@@ -11,11 +11,13 @@ services:
       - MONGO_URI=mongodb://mongo:27017/travelTrails
       - SECRET=qweuiopjklasdfbnmzxcvasdfghjkl
       - PORT=4000
-      - BACKEND_IP=${BACKEND_IP:-$(curl -s ifconfig.me)}
+      - BACKEND_IP=${BACKEND_IP:-$(cat /shared-data/backend_ip.txt)}
     depends_on:
       - mongo
     networks:
       - my_network
+    volumes:
+      - shared-data:/shared-data
 
   frontend:
     build:
@@ -24,11 +26,13 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - BACKEND_IP=${BACKEND_IP:-$(curl -s ifconfig.me)}
+      - BACKEND_IP=${BACKEND_IP:-$(cat /shared-data/backend_ip.txt)}
     depends_on:
       - backend
     networks:
       - my_network
+    volumes:
+      - shared-data:/shared-data
 
   mongo:
     image: mongo:4.4.25
@@ -41,6 +45,7 @@ services:
 
 volumes:
   mongo-data:
+  shared-data:
 
 networks:
   my_network:
