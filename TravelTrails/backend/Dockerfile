@@ -1,7 +1,7 @@
 # backend
 
 # Use an official Node.js image based on Alpine
-FROM node:21
+FROM node:21-alpine
 
 # Set the working directory
 WORKDIR /app
