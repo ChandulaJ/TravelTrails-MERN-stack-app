@@ -9,9 +9,6 @@ services:
       - "4000:4000"
 
     environment:
-      - MONGO_URI=mongodb://mongo:27017/travelTrails
-      - SECRET=qweuiopjklasdfbnmzxcvasdfghjkl
-      - PORT=4000
       - BACKEND_IP=${BACKEND_IP:-$(curl -s http://api.ipify.org)}
     depends_on:
       - mongo
@@ -23,7 +20,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000
       - BACKEND_IP=${BACKEND_IP:-$(curl -s http://api.ipify.org)}
     depends_on:
       - backend
