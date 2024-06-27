@@ -19,3 +19,7 @@ resource "aws_eip_association" "TravelTrails-eip_assoc" {
   allocation_id = "eipalloc-0249d6092bf4d4079"
 }
 
+
+output "instance_ip" {
+  value = aws_instance.TravelTrails-ec2.public_ip
+}
