@@ -15,7 +15,6 @@ resource "aws_instance" "my-ec2" {
 
 resource "aws_eip" "my_eip" {
   instance = aws_instance.my-ec2.id
-  vpc      = true
   allocation_id = "eipalloc-03a066f8fdd51aaf6"
 }
 
