@@ -14,7 +14,7 @@
         name: "{{ item }}"
         state: present
         update_cache: yes
-      with_items:
+      loop:
         - apt-transport-https
         - ca-certificates
         - curl
@@ -22,7 +22,7 @@
       tags:
         - docker
 
-    - name: Add Docker’s official GPG key
+    - name: Add Docker official GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
@@ -38,8 +38,8 @@
 
     - name: Set up the stable repository
       apt_repository:
-          repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-          state: present
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
         update_cache: yes
       tags:
         - docker
