@@ -14,7 +14,7 @@ resource "aws_instance" "my-ec2" {
   }
 }
 
-resource "aws_eip_association" "TravelTrails-eip_assoc" {
+resource "aws_eip_association" "TravelTrails-deploy-server-eip" {
   instance_id   = aws_instance.TravelTrails-ec2.id
   allocation_id = "eipalloc-0249d6092bf4d4079"
   
