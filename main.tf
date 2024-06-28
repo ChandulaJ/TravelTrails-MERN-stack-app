@@ -16,7 +16,7 @@ resource "aws_instance" "my-ec2" {
 
 resource "aws_eip_association" "TravelTrails-eip_assoc" {
   instance_id   = aws_instance.my-ec2.id
-  allocation_id = "eipalloc-03a066f8fdd51aaf6"
+  allocation_id = "eipalloc-098113030e436d0e0"
 }
 
 
