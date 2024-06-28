@@ -13,17 +13,12 @@ resource "aws_instance" "my-ec2" {
   }
 }
 
-resource "aws_eip" "my_eip" {
-  # This block is not creating a new EIP, but rather managing an existing EIP
-  depends_on = [aws_instance.my-ec2]
-  instance = aws_instance.my-ec2.id
-  # allocation_id = "eipalloc-03a066f8fdd51aaf6"  # allocation_id should not be set for managing an existing EIP
-}
 
-resource "aws_eip_association" "my_eip_assoc" {
+resource "aws_eip_association" "TravelTrails-eip_assoc" {
   instance_id   = aws_instance.my-ec2.id
   allocation_id = "eipalloc-03a066f8fdd51aaf6"
 }
+
 
 output "instance_ip" {
   value = aws_eip.my_eip.public_ip
