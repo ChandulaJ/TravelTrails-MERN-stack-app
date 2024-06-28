@@ -13,7 +13,17 @@ resource "aws_instance" "my-ec2" {
   }
 }
 
+resource "aws_eip" "my_eip" {
+  instance = aws_instance.my-ec2.id
+  vpc      = true
+  allocation_id = "eipalloc-03a066f8fdd51aaf6"
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.my-ec2.id
+  allocation_id = aws_eip.my_eip.id
+}
 
 output "instance_ip" {
-  value = aws_instance.my-ec2.public_ip
+  value = aws_eip.my_eip.public_ip
 }
