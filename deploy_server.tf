@@ -1,4 +1,3 @@
-
 provider "aws" {
   region = "us-east-1"
 }
@@ -14,10 +13,14 @@ resource "aws_instance" "my-ec2" {
   }
 }
 
+resource "aws_eip" "TravelTrails-deploy-server-eip" {
+  instance = aws_instance.my-ec2.id
+  vpc      = true
+}
+
 resource "aws_eip_association" "TravelTrails-deploy-server-eip" {
-  instance_id   = aws_instance.TravelTrails-ec2.id
-  allocation_id = "eipalloc-0249d6092bf4d4079"
-  
+  instance_id   = aws_instance.my-ec2.id
+  allocation_id = aws_eip.TravelTrails-deploy-server-eip.id
 }
 
 output "instance_ip" {
