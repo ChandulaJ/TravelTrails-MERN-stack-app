@@ -19,5 +19,5 @@ resource "aws_eip_association" "eip_assoc" {
 }
 
 output "instance_ip" {
-  value = aws_eip.my_eip.public_ip
+  value = "34.204.105.197"
 }
