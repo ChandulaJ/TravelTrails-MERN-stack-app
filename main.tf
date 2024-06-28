@@ -12,15 +12,10 @@ resource "aws_instance" "my-ec2" {
     Name = "DeployServer"
   }
 }
-
-resource "aws_eip" "my_eip" {
-  instance = aws_instance.my-ec2.id
-  allocation_id = "eipalloc-03a066f8fdd51aaf6"
-}
-
-resource "aws_eip_association" "eip_assoc" {
+resource "aws_eip_association" "my_eip_assoc" {
   instance_id   = aws_instance.my-ec2.id
-  allocation_id = aws_eip.my_eip.id
+  allocation_id = "eipalloc-03a066f8fdd51aaf6"
+  
 }
 
 output "instance_ip" {
