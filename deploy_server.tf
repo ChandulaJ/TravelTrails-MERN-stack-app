@@ -13,12 +13,6 @@ resource "aws_instance" "my-ec2" {
   }
 }
 
-resource "aws_eip" "TravelTrails-deploy-server-eip" {
-  instance = aws_instance.my-ec2.id
-  vpc      = true
-}
-
-
 
 output "instance_ip" {
   value = aws_instance.my-ec2.public_ip
