@@ -9,7 +9,7 @@
       - chanduj/traveltrails_backend:latest
       - mongo:4.4.25
   tasks:
-    - name: Install docker packages
+    - name: Install Docker packages
       apt:
         name: "{{ item }}"
         state: present
@@ -50,7 +50,7 @@
       tags:
         - docker
 
-    - name: Install docker
+    - name: Install Docker
       apt:
         name: docker-ce
         state: present
@@ -67,33 +67,50 @@
         - docker
 
     - name: Pull required Docker images
-      command: docker pull {{ item }}
+      docker_image:
+        name: "{{ item }}"
       with_items: "{{ docker_images }}"
       tags:
         - docker
 
     - name: Create MongoDB volume
-      command: docker volume create mongo-data
+      docker_volume:
+        name: mongo-data
       tags:
         - docker
 
     - name: Run MongoDB container
-      command: >
-        docker run -d --name mongo -v mongo-data:/data/db
-        -p 27017:27017 mongo:4.4.25
+      docker_container:
+        name: mongo
+        image: mongo:4.4.25
+        state: started
+        ports:
+          - "27017:27017"
+        volumes:
+          - "mongo-data:/data/db"
       tags:
         - docker
 
     - name: Run backend container
-      command: >
-        docker run -d --name backend --link mongo:mongo
-        -p 4000:4000 chanduj/traveltrails_backend:latest
+      docker_container:
+        name: backend
+        image: chanduj/traveltrails_backend:latest
+        state: started
+        ports:
+          - "4000:4000"
+        links:
+          - "mongo:mongo"
       tags:
         - docker
 
     - name: Run frontend container
-      command: >
-        docker run -d --name frontend --link backend:backend
-        -p 3000:3000 chanduj/traveltrails_frontend:latest
+      docker_container:
+        name: frontend
+        image: chanduj/traveltrails_frontend:latest
+        state: started
+        ports:
+          - "3000:3000"
+        links:
+          - "backend:backend"
       tags:
         - docker
