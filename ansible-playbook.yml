@@ -4,6 +4,10 @@
   gather_facts: false
   vars:
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+    docker_images:
+      - chanduj/traveltrails_frontend:latest
+      - chanduj/traveltrails_backend:latest
+      - mongo:4.4.25
   tasks:
     - name: Install docker packages
       apt:
@@ -59,5 +63,37 @@
         name: "ubuntu"
         group: "docker"
         append: yes
+      tags:
+        - docker
+
+    - name: Pull required Docker images
+      command: docker pull {{ item }}
+      with_items: "{{ docker_images }}"
+      tags:
+        - docker
+
+    - name: Create MongoDB volume
+      command: docker volume create mongo-data
+      tags:
+        - docker
+
+    - name: Run MongoDB container
+      command: >
+        docker run -d --name mongo -v mongo-data:/data/db
+        -p 27017:27017 mongo:4.4.25
+      tags:
+        - docker
+
+    - name: Run backend container
+      command: >
+        docker run -d --name backend --link mongo:mongo
+        -p 4000:4000 chanduj/traveltrails_backend:latest
+      tags:
+        - docker
+
+    - name: Run frontend container
+      command: >
+        docker run -d --name frontend --link backend:backend
+        -p 3000:3000 chanduj/traveltrails_frontend:latest
       tags:
         - docker
