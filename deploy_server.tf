@@ -18,10 +18,7 @@ resource "aws_eip" "TravelTrails-deploy-server-eip" {
   vpc      = true
 }
 
-resource "aws_eip_association" "TravelTrails-deploy-server-eip" {
-  instance_id   = aws_instance.my-ec2.id
-  allocation_id = aws_eip.TravelTrails-deploy-server-eip.id
-}
+
 
 output "instance_ip" {
   value = aws_instance.my-ec2.public_ip
