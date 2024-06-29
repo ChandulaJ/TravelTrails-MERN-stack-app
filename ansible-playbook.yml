@@ -1,7 +1,7 @@
 ---
 - hosts: all
   become: yes
-  gather_facts: true
+  gather_facts: false
   vars:
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
     docker_images:
@@ -68,7 +68,9 @@
     - name: Pull required Docker images
       docker_image:
         name: "{{ item }}"
-      with_items: "{{ docker_images }}"
+        source: pull
+        state: present
+      loop: "{{ docker_images }}"
       tags:
         - docker
 
