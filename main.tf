@@ -15,9 +15,9 @@ resource "aws_instance" "my_ec2" {
 
 resource "aws_eip_association" "eip_assoc" {
   instance_id   = aws_instance.my_ec2.id
-  allocation_id = "eipalloc-098113030e436d0e0"
+  allocation_id = "eipalloc-03a066f8fdd51aaf6"
 }
 
 output "instance_ip" {
-  value = "34.204.105.197"
+  value = "100.29.182.72"
 }
