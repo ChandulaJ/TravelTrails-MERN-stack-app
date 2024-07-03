@@ -82,6 +82,13 @@
       tags:
         - docker
 
+    - name: Create Docker network
+      docker_network:
+        name: "{{ docker_network }}"
+        state: present
+      tags:
+        - docker
+
     - name: Run MongoDB container
       docker_container:
         name: mongo
@@ -89,6 +96,9 @@
         state: started
         ports:
           - "27017:27017"
+        restart_policy: always
+        networks:
+          - name: "{{ docker_network }}"
         volumes:
           - "mongo-data:/data/db"
       tags:
@@ -99,6 +109,9 @@
         name: backend
         image: chanduj/traveltrails_backend:latest
         state: started
+        restart_policy: always
+        networks:
+          - name: "{{ docker_network }}"
         ports:
           - "4000:4000"
         links:
@@ -111,6 +124,9 @@
         name: frontend
         image: chanduj/traveltrails_frontend:latest
         state: started
+        restart_policy: always
+        networks:
+          - name: "{{ docker_network }}"
         ports:
           - "3000:3000"
         links:
