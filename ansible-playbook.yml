@@ -8,6 +8,7 @@
       - chanduj/traveltrails_frontend:latest
       - chanduj/traveltrails_backend:latest
       - mongo:4.4.25
+    docker_network: traveltrails_network
   tasks:
     - name: Install Docker packages
       apt:
