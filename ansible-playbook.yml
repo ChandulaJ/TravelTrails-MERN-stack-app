@@ -77,7 +77,7 @@
 
     - name: Copy Docker Compose file to remote server
       copy:
-        src: /opt/jenkins-slave/workspace/TravelTrails/TravelTrails/docker-compose-remote.yml
+        src: /opt/jenkins-slave/workspace/test/TravelTrails/docker-compose-remote.yml
         dest: /usr
       tags:
         - docker
