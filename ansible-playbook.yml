@@ -68,69 +68,23 @@
       tags:
         - docker
 
-    - name: Pull required Docker images
-      docker_image:
-        name: "{{ item }}"
-        source: pull
-        state: present
-      loop: "{{ docker_images }}"
+    - name: Install docker-compose
+      remote_user: ubuntu
+      get_url: 
+        url : https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64   
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+
+    - name: Copy Docker Compose file to remote server
+      copy:
+        src: ./docker-compose-remote.yml
+        dest: /usr
       tags:
         - docker
 
-    - name: Create MongoDB volume
-      docker_volume:
-        name: mongo-data
-      tags:
-        - docker
-
-    - name: Create Docker network
-      docker_network:
-        name: "{{ docker_network }}"
-        state: present
-      tags:
-        - docker
-
-    - name: Run MongoDB container
-      docker_container:
-        name: mongo
-        image: mongo:4.4.25
-        state: started
-        ports:
-          - "27017:27017"
-        restart_policy: always
-        networks:
-          - name: "{{ docker_network }}"
-        volumes:
-          - "mongo-data:/data/db"
-      tags:
-        - docker
-
-    - name: Run backend container
-      docker_container:
-        name: backend
-        image: chanduj/traveltrails_backend:latest
-        state: started
-        restart_policy: always
-        networks:
-          - name: "{{ docker_network }}"
-        ports:
-          - "4000:4000"
-        links:
-          - "mongo:mongo"
-      tags:
-        - docker
-
-    - name: Run frontend container
-      docker_container:
-        name: frontend
-        image: chanduj/traveltrails_frontend:latest
-        state: started
-        restart_policy: always
-        networks:
-          - name: "{{ docker_network }}"
-        ports:
-          - "3000:3000"
-        links:
-          - "backend:backend"
+    - name: Run Docker Compose up
+      command: docker-compose up -d
+      args:
+        chdir: /usr
       tags:
         - docker
