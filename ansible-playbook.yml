@@ -83,7 +83,7 @@
         - docker
 
     - name: Run Docker Compose up
-      command: docker-compose up -d
+      command: docker-compose-remote up -d
       args:
         chdir: /usr
       tags:
